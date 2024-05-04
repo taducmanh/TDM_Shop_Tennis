@@ -1,0 +1,243 @@
+﻿
+@{
+    ViewBag.Title = "QuangCao";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link href="~/Content/validationEngine.jquery.css" rel="stylesheet" />
+@using PagedList
+@using PagedList.Mvc
+@using ShopBanDoTheThao.Models
+@model QuangCaoViewModel
+<style>
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+
+                <li>
+                    <i class="fa fa-dashboard">
+                        <a>
+                            @Html.ActionLink("Trang chủ", "Index", "Admin")
+                        </a>
+
+                    </i>
+                </li>
+                <li class="active">
+                    <i class="fa fa-edit"></i> Quản lý quảng cáo
+                </li>
+
+            </ol>
+        </div>
+
+
+
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                @using (Html.BeginForm("SuaQuangCao", "CaiDat", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmSua" }))
+                {
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Thông tin quảng cáo</h4>
+
+                        </div>
+                        <div class="modal-body">
+
+
+                            <div class="panel-body">
+                                <div class="col-lg-6">
+                                    <input type="hidden" name="id" id="id" value="0">
+
+                                    
+                                    <div class="form-group">
+                                        <label>Ảnh đại diện</label>
+                                        <div class="input-group">
+
+                                            <span class="input-group-btn">
+                                                <span class="btn btn-default btn-file">
+
+                                                    Chọn ảnh&hellip; <input type="file" name="file" class="form-control" multiple>
+                                                </span>
+                                            </span>
+                                            <input type="text" class="form-control" id="img" name="img" readonly>
+                                        </div>
+
+                                      
+                                    </div>
+                                    
+                                
+
+
+                                   
+                                    <div class="form-group">
+                                        <label>Link website</label>
+                                        @Html.TextAreaFor(m => m.QuangCao.LinkQuangCao, new { id = "txtlink", @class = "form-control validate[required]", placeholder = "Link", rows = 6 })
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>Mô tả</label>
+                                        @Html.TextAreaFor(m => m.QuangCao.MoTa, new { id = "txtmota", @class = "form-control ", placeholder = "Mô tả", rows = 6 })
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" name="submit" id="bt_Sua" class="btn btn-default" value="Sửa" />
+                            <input type="reset" class="btn btn-default" onclick="Huy()" value="Làm lại">
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+
+    </div>
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <div class="row">
+
+               
+                @*<div class="col-lg-8">
+                    <form action="/AdminQuanLySanPham/Index" id="fromTimKiem">
+                        <div class="col-lg-4" style="margin-left: 170px; float: right">
+                            <label></label>
+                            <div>
+                                <div class="form-group input-group">
+                                    <input type="text" name="searchString" class="form-control" placeholder="Tìm Kiếm.........">
+                                    <span class="input-group-btn"><button class="btn btn-default" type="button" onclick="$('#fromTimKiem').submit();"><i class="fa fa-search"></i></button></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>*@
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped" id="tb_sp">
+                            <thead>
+                                <tr>
+                                    <th>Mã</th>
+                                    <th>Ảnh</th>
+                                    <th>Link</th>
+                                    <th>Mô tả</th>
+                                    <th>Sửa</th>
+                                
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                @foreach (var item in Model.DanhSachQuangCaos)
+                                {
+
+                                  
+                                    if (Model.DanhSachQuangCaos != null)
+                                    {
+                                        <tr>
+                                           
+                                            <td>@item.Id</td>
+                                     
+                                            <td><img id="img" src="@item.AnhDaiDien" style="width: 50px; height: 50px;" /></td>
+                                          
+                                            <td>@item.LinkQuangCao</td>
+                                            <td>@item.MoTa</td>
+                                            <td>
+                                                <button type="button" onclick="Sua(this)" class="btn btn-sm" data-toggle="modal" data-target="#myModal">Sửa</button>
+
+                                            </td>
+                                           
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-2.1.4.min.js"></script>
+<script src="~/ckeditor/ckeditor.js"></script>
+<script src="~/ckfinder/ckfinder.js"></script>
+<script src="/Scripts/jquery.validationEngine-en.js"></script>
+<script src="/Scripts/jquery.validationEngine.js"></script>
+<Script>
+   
+
+    $(document).on('change', '.btn-file :file', function () {
+        var input = $(this),
+            numFiles = input.get(0).files ? input.get(0).files.length : 1,
+            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        input.trigger('fileselect', [numFiles, label]);
+    });
+
+    $(document).ready(function () {
+        $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+    });
+
+    $("#frmSua").validationEngine();
+
+    $("#frmSua").click(function () {
+
+        if ($("#frmSua").valid()) {
+            $("#frmSua").submit();
+        };
+    });
+
+  
+    function Sua(el) {
+        event.preventDefault();
+        $("#id").val(el.parentNode.parentNode.cells[0].textContent);
+   
+        $("#file").val($(el.parentNode.parentNode.cells[1]).find('img').attr('src'));
+        $("#img").val($(el.parentNode.parentNode.cells[1]).find('img').attr('src'));
+    
+        $("#txtlink").val(el.parentNode.parentNode.cells[2].textContent);
+        $("#txtmota").val(el.parentNode.parentNode.cells[2].textContent);
+
+    }
+   
+   
+</Script>
+

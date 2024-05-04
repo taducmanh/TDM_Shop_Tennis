@@ -1,0 +1,325 @@
+﻿@using ShopBanDoTheThao.Models
+@model dynamic
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ShopEntities shop=new ShopEntities();
+    
+    var DsChuyenMuc = (List<ChuyenMuc>) ViewData["DanhSachChuyenMuc"];
+    var DsSanPham = (List<SanPham>) ViewData["DanhSachSanPham"];
+    var quangCao = shop.QuangCaos.ToList();
+}
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/nivo-slider.css" rel="stylesheet" />
+<link href="~/Content/owl.carousel.css" rel="stylesheet" />
+<link href="~/Content/responsive.css" rel="stylesheet" />
+<link href="~/Content/style.css" rel="stylesheet" />
+<link href="~/Content/animate.css" rel="stylesheet" />
+<link href="~/Content/cloud-zoom.css" rel="stylesheet" />
+@*<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic,700,700italic,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Raleway:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">*@
+<div class="breadcrumbs">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/Home/Index">Trang chủ</a></li>
+            <li class="active">Chuyên mục</li>
+        </ul>
+    </div>
+</div>
+
+<div class="main">
+<div class="container">
+<div class="row">
+<div class="col-sm-3 col-left">
+<div class="block block-layered-nav">
+    <div class="block-title">
+        <strong><span>Sắp xếp</span></strong>
+    </div>
+    <div class="block-content">
+        <p class="block-subtitle">Shopping Options</p>
+        <div id="narrow-by-list">
+            <div class="layered layered-Category">
+                <h2>Chuyên mục</h2>
+                <div class="content-shopby">
+                    <ol>
+                        @foreach (var item in DsChuyenMuc)
+                        {
+                            <li><a href="/ChuyenMuc/LaySanPham/@item.MaChuyenMuc">@item.TenChuyenMuc</a></li>
+                        }
+
+                        
+                    </ol>
+                </div>
+            </div>
+            <div class="layered layered-price">
+                <h2>Giá</h2>
+                <div class="content-shopby">
+                    <div id="slider-range"></div>
+                    <div id="search_pr">
+                        <input type="text" name="first_price" class="form-control">
+                        <input type="text" name="last_price" class="form-control">
+                        <button id="search_price" name="search_price" type="button" class="btn btn-default">Lọc</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layered layered-Color">
+                <h2>Màu sắc</h2>
+                <div class="content-shopby">
+                    <ol>
+                        <li><a href="#">Đỏ</a></li>
+                        <li><a href="#">Cam</a></li>
+                        <li><a href="#">Xanh da trời</a></li>
+                        <li><a href="#">Đen</a></li>
+                        <li><a href="#">Xanh lá</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /sort -->
+
+@*<div class="banner-left">
+    <a href="#"><img src="~/Images/QuangCao/ads-01.jpg" alt=""></a>
+    <div class="banner-content">
+        <h1>sale up to</h1>
+        <h2>20% off</h2>
+        <p>on selected products</p>
+        <a href="#">buy now</a>
+    </div>
+</div>*@
+<div class="block">
+    @Html.Partial("XemNhieuNhat")
+</div><!-- /.block - Special offer -->
+</div><!-- /.col-left -->
+<div class="col-sm-9 col-right">
+<div class="banner">
+    <a href="@quangCao[3].LinkQuangCao"><img alt="" src="@quangCao[3].AnhDaiDien"></a>
+</div>
+<div class="page-title">
+    <h1>@ViewBag.TenChuyenMuc</h1>
+</div>
+<div class="toolbar">
+    <div class="sorter">
+        <p class="view-mode">
+            <label>View as:</label>
+            <strong class="grid" title="Grid">Grid</strong>&nbsp;
+         
+        </p>
+    </div><!-- /.sorter -->
+    <div class="pager">
+        <div class="sort-by hidden-xs">
+            <label>Sắp xếp:</label>
+            <select class="form-control input-sm">
+                <option selected="selected">Vị trí</option>
+                <option>Tên</option>
+                <option>Giá</option>
+            </select>
+            <a title="Set Descending Direction" href="#"><span class="fa fa-sort-amount-desc"></span></a>
+        </div>
+        <div class="limiter hidden-xs">
+            <label>Show:</label>
+            <div class="limiter-inner">
+                <select class="form-control input-sm">
+                    <option>9</option>
+                    <option selected="selected">12</option>
+                    <option>24</option>
+                    <option>36</option>
+                </select>
+            </div>
+        </div>
+    </div><!--- /.pager -->
+</div><!-- /.toolbar -->
+<div class="row products">
+@foreach (var item in DsSanPham)
+{
+    <div class="col-md-3 col-sm-6">
+        <div class='productslider-item item'>
+            <div class="item-inner">
+                <div class="images-container">
+                    <div class="product_icon">
+                        @if (item.GiaGiam > 0)
+                        {
+                            <div class="sale-icon"><span>@Math.Round(double.Parse((100 - ((item.GiaGiam * 100) / item.Gia)).ToString()))  %</span></div>
+                        }
+                    </div>
+                    <a href="/QuanLySanPham/ChiTietSanPham/@item.MaSanPham" onclick="TangLuot(@item.MaSanPham)" title="@item.TenSanPham" class="product-image">
+                        <img src="@item.AnhDaiDien" alt="@item.TenSanPham"  style="height: 160px;"/>
+                    </a>
+                   
+                </div>
+                <div class="des-container">
+                    <h2 class="product-name">
+                        <a href="/QuanLySanPham/ChiTietSanPham/@item.MaSanPham" onclick="TangLuot(@item.MaSanPham)" title="@item.TenSanPham">@if (item.TenSanPham.Length > 20)
+                                                                                                         {
+                                                                                                             @item.TenSanPham.Substring(0, 20);
+                                                                                                         }
+                                                                                                         else
+                                                                                                         {
+                                                                                                             @item.TenSanPham;}</a>
+                    </h2>
+                    <div class="price-box">
+                        @if (item.GiaGiam > 0)
+                        {
+                            <p class="special-price">
+                                <span class="price-label">Giá : </span>
+                                <span class="price">@double.Parse(item.GiaGiam.ToString()).ToString("#,##0")</span>
+                            </p>
+                                            <p class="old-price">
+                                                <span class="price-label">Giá NY: </span>
+                                                <span class="price">@double.Parse(item.Gia.ToString()).ToString("#,##0")</span>
+                                            </p>
+                        }
+                        else
+                        {
+                            <p class="special-price">
+                                <span class="price-label">Giá NY: </span>
+                                <span class="price">@double.Parse(item.Gia.ToString()).ToString("#,##0")</span>
+                            </p>
+                            <p class="old-price">
+                                <span class="price-label">&nbsp;</span>
+                                <span class="price">&nbsp;</span>
+                            </p>
+                        }
+                    </div>
+                    <div class="ratings">
+                        <div class="rating-box">
+                            <div class="rating" style="width: 67%"></div>
+                        </div>
+                        <span class="amount"><a href="#">@item.LuotXem Lượt xem</a></span>
+                        @using (Html.BeginForm("ThemVaoGioHang", "GioHang", new { id = item.MaSanPham, SoLuong = 1 }, FormMethod.Post, new { enctype = "multipart/form-data", id = "fromThem" }))
+                        {
+
+                            <a href="javascript:;" style="width: 100%" class="btn btn-danger btn-cart" onclick="$(this).closest('form').submit();">Thêm vào giỏ</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+</div><!-- /.product -->
+<div class="toolbar">
+    <div class="sorter">
+        <p class="view-mode">
+            <label>View as:</label>
+            <strong class="grid" title="Grid">Grid</strong>&nbsp;
+            @*<a class="list" title="List" href="#">List</a>&nbsp;*@
+        </p>
+    </div><!-- /.sorter -->
+    <div class="pager">
+        <div class="sort-by hidden-xs">
+            <label>Sắp xếp:</label>
+            <select class="form-control input-sm">
+                <option selected="selected">Vị trí</option>
+                <option>Tên</option>
+                <option>Giá</option>
+            </select>
+            <a title="Set Descending Direction" href="#"><span class="fa fa-sort-amount-desc"></span></a>
+        </div>
+        <div class="limiter hidden-xs">
+            <label>Show:</label>
+            <div class="limiter-inner">
+                <select class="form-control input-sm">
+                    <option>9</option>
+                    <option selected="selected">12</option>
+                    <option>24</option>
+                    <option>36</option>
+                </select>
+            </div>
+        </div>
+    </div><!-- /.pager -->
+</div><!-- /.toolbar -->
+</div><!-- /.col-right -->
+</div>
+</div>
+</div><!-- /.main -->
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+@*<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>*@
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/owl.carousel.min.js"></script>
+<script src="~/Scripts/main.js"></script>
+<script type="text/javascript">
+    function TangLuot(id) {
+
+        $.ajax({
+            url: '/QuanLySanPham/TangLuotXem/' + id + '',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+
+            },
+            error: function (err) {
+
+            }
+        });
+    };
+    $(document).ready(function(){
+        /* special-offer slider */
+        $("#special-offer .owl").owlCarousel({
+            autoPlay : false,
+            items : 1,
+            itemsDesktop : [1199,1],
+            itemsDesktopSmall : [991,1],
+            itemsTablet: [767,2],
+            itemsMobile : [480,1],
+            slideSpeed : 3000,
+            paginationSpeed : 3000,
+            rewindSpeed : 3000,
+            navigation : true,
+            stopOnHover : true,
+            pagination : false,
+            scrollPerPage:true,
+        });
+
+        /* slider price */
+        var currencies = "$";
+        var toolbar_status = "1";
+        var rate = "1";
+        var min = "99"
+        min = Number(min);
+        var max = "999"
+        max = Number(max);
+        var currentMinPrice = "99"
+        currentMinPrice = Number(currentMinPrice);
+        var currentMaxPrice = "999"
+        //alert('min: '+min+'--max: '+ max+ 'currentMin: '+currentMinPrice);
+        currentMaxPrice = Number(currentMaxPrice);
+        var params = "";
+        params = $.trim(params);
+        //slider
+        $( "#slider-range" ).slider({
+            range: true,
+            min: min,
+            max: max,
+            values: [ currentMinPrice, currentMaxPrice ],
+            slide: function( event, ui ) {
+                $( "#amount" ).val( currencies + ui.values[ 0 ] + " - "+ currencies + ui.values[ 1 ] );
+                $('input[name="first_price"]').val(ui.values[0]);
+                $('input[name="last_price"]').val(ui.values[1]);
+            },
+            stop: function( event, ui ) {
+            }
+        });
+
+        $( "#amount" ).val( currencies + $( "#slider-range" ).slider( "values", 0 ) +
+            " - "+currencies + $( "#slider-range" ).slider( "values", 1 ) );
+        $('input[name="first_price"]').val($( "#slider-range" ).slider( "values", 0 ));
+        $('input[name="last_price"]').val($( "#slider-range" ).slider( "values", 1 ));
+
+        //search price from input box
+        $('#search_price').each(function(){
+            $(this).live('click',function(){
+                return false;
+            })
+        });
+        $('#slider-range a:first').addClass('first_item');
+        $('#slider-range a:last').addClass('last_item');
+
+    });
+</script>

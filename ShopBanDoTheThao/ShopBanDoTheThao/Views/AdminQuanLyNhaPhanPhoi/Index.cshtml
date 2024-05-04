@@ -1,0 +1,295 @@
+﻿@using ShopBanDoTheThao.Models
+
+@{
+    ViewBag.Title = "Quanr lý nhà phân phối";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    ShopEntities shop = new ShopEntities();
+}
+<link href="~/Content/validationEngine.jquery.css" rel="stylesheet" />
+@using PagedList.Mvc;
+@using ShopBanDoTheThao.Models
+@model QuanLyNhaPhanPhoi
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+
+                <li>
+                    <i class="fa fa-dashboard">
+                        <a>
+                            @Html.ActionLink("Trang chủ", "Index", "Admin")
+                        </a>
+
+                    </i>
+                </li>
+                <li class="active">
+                    <i class="fa fa-edit"></i> Quản lý nhà phân phối
+                </li>
+
+            </ol>
+        </div>
+
+
+
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                @using (Html.BeginForm("ThemNhaPhanPhoi", "AdminQuanLyNhaPhanPhoi", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmThem" }))
+                {
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"> Thông tin nhà phân phối</h4>
+
+                        </div>
+                        <div class="modal-body">
+                            <div class="panel-body">
+
+
+                                <div class="col-lg-12">
+                                    <input type="hidden" name="id" id="txtmanpp" value="0">                                
+                                    <div class="form-group">
+                                        <label>Tên nhà phân phối</label>
+                                        @Html.TextBoxFor(m => m.NhaPhanPhois.TenNhaPhanPhoi, new { id = "txttennpp", @class = "form-control validate[required]", placeholder = "Tên nhà phân phối" })
+
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label>Địa chỉ</label>
+                                        @Html.TextBoxFor(m => m.NhaPhanPhois.DiaChi, new { id = "txtdiachi", @class = "form-control validate[required]", placeholder = "Địa chỉ" })
+
+                                    </div>
+                                    <div class="form-group">
+
+                                        <label>Số điện thoại </label>
+                                        @Html.TextBoxFor(m => m.NhaPhanPhois.SoDienThoai, new { id = "txtsdt", @class = "form-control validate[required]", type = "number", placeholder = "Số điện thoại" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Fax</label>
+                                        @Html.TextBoxFor(m => m.NhaPhanPhois.Fax, new { id = "txtfax", @class = "form-control validate[required]", placeholder = "Số FAX" })
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Mô tả</label>
+                                        @Html.TextAreaFor(m => m.NhaPhanPhois.MoTa, new { id = "txtmota", @class = "form-control validate[required]", placeholder = "Mô tả", row = 6 })
+
+                                    </div>
+                                 
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <input type="submit" name="submit" id="bt_Them" class="btn btn-default" value="Thêm" />
+                            <input type="submit" name="submit" id="bt_Sua" class="btn btn-default" value="Sửa" />
+                            <input type="reset" class="btn btn-default" onclick="Huy()" value="Làm lại">
+                        </div>
+
+                    </div>
+
+
+                }
+            </div>
+        </div>
+    </div>
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <div class="row">
+                <div class="col-lg-4">
+                    <a class="btn btn-app" id="Dialog_them" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i>Thêm </a>
+                    <a class="btn btn-app" id="bt_xoa_all" style="display: none"><i class="fa fa-remove"></i>Xóa </a>
+                    <a class="btn btn-app" id="bt_huy_all" style="display: none"><i class="fa fa-remove"></i>Hủy </a>
+                </div>
+                <div class="col-lg-8">
+                    <form action="/AdminQuanLyNhaPhanPhoi/Index" id="fromTimKiem">
+                        <div class="col-lg-4" style="margin-left: 170px; float: right">
+                            <label></label>
+                            <div>
+                                <div class="form-group input-group">
+                                    <input type="text" name="searchString" class="form-control" placeholder="Tìm Kiếm.........">
+                                    <span class="input-group-btn"><button class="btn btn-default" type="button" onclick="$('#fromTimKiem').submit();"><i class="fa fa-search"></i></button></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped" id="tb_npp">
+                            <thead>
+                                <tr><th><input type="checkbox" name="checkAll" id="checlAll" /></th>
+                                    <th>Mã</th>
+                                    <th>Tên</th>
+                                    <th>Địa chỉ </th>
+                                    <th>Số ĐT</th>
+                                    <th>Fax </th>
+                                    <th>Mô tả</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                @foreach (var item in Model.DanhSachNhaPhanPhoi)
+                                {
+                                    <tr><td><input type="checkbox" name="check" id="check" /></td>
+                                        <td>@item.MaNhaPhanPhoi</td>
+                                        <td>@item.TenNhaPhanPhoi</td>
+                                        <td>@item.DiaChi</td>
+                                        <td>@item.SoDienThoai</td>
+                                        <td>@item.Fax</td>
+                                        <td>@item.MoTa</td>
+                                        <td><a onclick="ChiTiet(this)" style="cursor: pointer">Xem</a></td>
+                                        <td>
+                                            <button type="button" onclick="Sua(this)" class="btn btn-sm" data-toggle="modal" data-target="#myModal">Sửa</button>
+                                        </td>
+                                        <td>
+                                            <button type="button" onclick="Xoa(this)" class="btn btn-sm">Xóa</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        @Html.PagedListPager(Model.DanhSachNhaPhanPhoi, page => Url.Action("Index", new { page }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.validationEngine.js"></script>
+<script src="~/Scripts/jquery.validationEngine-en.js"></script>
+<Script>
+
+    $("#frmThem").validationEngine();
+
+    $("#bt_Them").click(function () {
+        if ($("#frmThem").valid()) {
+            $("#frmThem").submit();
+        };
+    });
+
+    $("#Dialog_them").click(function () {
+
+        $("#bt_Sua").hide();
+        $("#bt_Them").show();
+        $("#sppp").show();
+    });
+    function Huy() {
+        $("#bt_Sua").hide();
+        $("#bt_Them").show();
+    }
+    $("#bt_Sua").hide();
+    function Sua(el) {
+
+        event.preventDefault();
+        $("#sppp").hide();
+        $("#bt_Sua").show();
+        $("#bt_Them").hide();
+        $("#txtmanpp").val(el.parentNode.parentNode.cells[1].textContent);
+        $("#txttennpp").val(el.parentNode.parentNode.cells[2].textContent);
+        $("#txtdiachi").val(el.parentNode.parentNode.cells[3].textContent);
+        $("#txtsdt").val(el.parentNode.parentNode.cells[4].textContent);
+        $("#txtfax").val(el.parentNode.parentNode.cells[5].textContent);
+        $("#txtmota").val(el.parentNode.parentNode.cells[6].textContent);
+
+    }
+    function Xoa(el) {
+        var manpp = el.parentNode.parentNode.cells[1].textContent;
+        $.ajax({
+            url: '/AdminQuanLyNhaPhanPhoi/XoaNhaPhanPhoi/?id=' + manpp + '',
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function () {
+                            alert("Xóa thành công");
+                            window.location.reload();
+                        },
+                        error: function () {
+                            alert("Xóa thất bại");
+                        }
+                    });
+    }
+    function ChiTiet(el) {
+
+        var manpp = el.parentNode.parentNode.cells[1].textContent;
+
+
+        location.href = ' @Url.Action("SanPhamPhanPhoi", "AdminQuanLyNhaPhanPhoi")?id=' + manpp + '';
+    }
+    var count = 0;
+    $(window).load(function () {
+        $('#checlAll').change(function () {
+            $("input:checkbox").prop('checked', $(this).prop("checked"));
+            if (this.checked) {
+                $("#bt_xoa_all").show();
+                $("#Dialog_them").hide();
+                $("#bt_huy_all").show();
+            }
+            else {
+
+                $("#bt_xoa_all").hide();
+                $("#Dialog_them").show();
+                $("#bt_huy_all").hide();
+            }
+        });
+
+        $("input[type='checkbox']").change(function (e) {
+            if ($(this).is(":checked")) {
+                count++;
+
+            } else {
+                count--;
+
+            }
+            if (count > 0) {
+                $("#bt_xoa_all").show();
+                $("#bt_huy_all").show();
+                $("#Dialog_them").hide();
+            } else {
+                $("#bt_xoa_all").hide();
+                $("#bt_huy_all").hide();
+                $("#Dialog_them").show();
+            }
+        });
+        $("#bt_huy_all").click(function () {
+            $("#bt_xoa_all").hide();
+            $("#bt_huy_all").hide();
+            $("#Dialog_them").show();
+            $("input:checkbox").attr('checked', false);
+        });
+        $("#bt_xoa_all").click(function () {
+            $("table#tb_npp > tbody > tr").each(function () {
+                var ck = $(this).find("input[type='checkbox']");
+                var id = $(this).find("td").eq(1).html();
+                if (ck.is(":checked")) {
+                    $.ajax({
+                        url: '/AdminQuanLyNhaPhanPhoi/XoaNhaPhanPhoi/?id=' + id + '',
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function () {
+                            return true;
+                        },
+                        error: function () {
+                            return false;
+                        }
+                    });
+                }
+
+            });
+            if (true) {
+                alert("Xóa thành công");
+                window.location.reload();
+            }
+        });
+    });
+</Script>
+
+
+

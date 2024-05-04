@@ -1,0 +1,568 @@
+﻿@using System.Web.Script.Serialization
+@using ShopBanDoTheThao.Models
+
+@{
+    ViewBag.Title = "ChiTietHoaDonNhap";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ShopEntities shop = new ShopEntities();
+
+    int id = (int)ViewBag.i;
+}
+<link href="~/Content/validationEngine.jquery.css" rel="stylesheet" />
+@using PagedList
+@using PagedList.Mvc
+@using ShopBanDoTheThao.Models
+@model QuanLyHoaDonNhap
+
+<style>
+    .remove {
+        background-color: #333;
+        border: 0;
+        color: #fff;
+        padding: 6px 10px;
+        line-height: 19px;
+        position: absolute;
+    }
+
+    label.error {
+        font-weight: 100;
+        font-style: italic;
+        color: red;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <input type="hidden" id="id_row" value="@id" />
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+
+                <li>
+                    <i class="fa fa-dashboard">
+                        <a>
+                            @Html.ActionLink("Trang chủ", "Index", "Admin")
+                        </a>
+
+                    </i>
+                </li>
+                <li>
+
+                    <a>
+                        @Html.ActionLink("Quản lý nhập hàng", "Index", "AdminQuanLyNhapHang")
+                    </a>
+
+
+                </li>
+                <li class="active">
+                    <i class="fa fa-edit"></i> Chi tiết hóa đơn
+                </li>
+
+            </ol>
+        </div>
+
+
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                @using (Html.BeginForm("ThemSanPham", "AdminQuanLyNhapHang", FormMethod.Post, new {enctype = "multipart/form-data", id = "frmThem"}))
+                {
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Thêm sản phẩm</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped" id="tb_themsp">
+                                        <thead>
+                                        <tr>
+
+                                            <th>Sản phẩm</th>
+                                            <th>Số lượng</th>
+                                            <th>Đơn vị tính</th>
+                                            <th>Giá nhập</th>
+                                            <th>Xóa</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody id="table-body" class="bd_them" style="border: none">
+                                        @*<tr>
+                                            <td>
+                                                <input type="hidden" name="id" id="txtIdsp" value="0">
+                                                @Html.DropDownListFor(m => m.ChiTietHoaDonNhap.MaSanPham, (List<SelectListItem>) ViewBag.SP, "CHỌN SẢN PHẨM", new {@class = "form-control validate[required]", id = "sp", Name = "chuyenmuc"})
+                                            </td>
+                                            <td>
+
+                                                @Html.TextBoxFor(m => m.ChiTietHoaDonNhap.SoLuong, new {id = "txtsl", @class = "form-control validate[required]", placeholder = "Số lượng", Name = "soluong", type = "number"})
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.ChiTietHoaDonNhap.DonViTinh, new {id = "txtdvt", @class = "form-control validate[required]", placeholder = "Đơn vị tính", Name = "donvitinh"})
+
+
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.ChiTietHoaDonNhap.GiaNhap, new {id = "txtgianhap", @class = "form-control validate[required]", placeholder = "Giá nhập", type = "number", Name = "gianhap"})
+                                            </td>
+                                            <td>
+
+                                            </td>
+                                        </tr>*@
+
+                                        </tbody>
+                                        @*<tfoot>
+                                        <tr>
+                                            <td>
+                                                <div class="input_fields_wrap">
+                                                    <a class="add_field_button btn btn-default " id="ThemTiep">Thêm tiếp</a>
+
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                        </tfoot>*@
+
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+
+                            <div class="input_fields_wrap" style="float: left">
+                                <a class="add_field_button btn btn-default " id="ThemTiep">Thêm tiếp</a>
+
+                            </div>
+                            <input id="bt_Them" type="button" name="submit" class="btn btn-default" value="Thêm"/>
+                            <input type="button" name="submit" id="bt_Sua" class="btn btn-default" value="Cập nhật"/>
+                            <input type="reset" class="btn btn-default" onclick="Huy()" value="Làm lại">
+
+
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+
+        
+    </div>
+    <table style="display: none">
+        <tbody id="tr_them">
+            <tr class="trtr">
+                <td>
+                    <input type="hidden" name="id" id="txtIdsp" value="0">
+                    <input type="hidden" name="idhd" id="idhd" value="0">
+                    @Html.DropDownListFor(m => m.ChiTietHoaDonNhap.MaSanPham, (List<SelectListItem>)ViewBag.SP, "CHỌN SẢN PHẨM", new { @class = "form-control validate[required]", id = "sp", Name = "chuyenmuc" })
+
+
+                </td>
+                <td>
+
+                    @Html.TextBoxFor(m => m.ChiTietHoaDonNhap.SoLuong, new { id = "txtsl", @class = "form-control validate[required]", placeholder = "Số lượng", type = "number", Name = "soluong",min="0" })
+
+
+
+
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.ChiTietHoaDonNhap.DonViTinh, new { id = "txtdvt", @class = "form-control validate[required]", placeholder = "Đơn vị tính", Name = "donvitinh" })
+
+
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.ChiTietHoaDonNhap.GiaNhap, new { id = "txtgianhap", @class = "form-control validate[required]", placeholder = "Giá nhập", type = "number", Name = "gianhap", min = "0" })
+
+
+                </td>
+                <td>
+                    <button type="button" id="remove_them" class="remove remove_field">&times;</button>
+                    <button type="button" id="remove_sua" style="display: none" onclick="XoaSua(this)" class="remove  edit">&times;</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <div class="row">
+                <div class="col-lg-4">
+                    <a class="btn btn-app" id="Dialog_them" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus-circle"></i>Thêm </a>
+                    <a class="btn btn-app" id="Dialog_Sua" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i>Sửa </a>
+                    <a class="btn btn-app" id="bt_xoa_all" style="display: none"><i class="fa fa-remove"></i>Xóa </a>
+                    <a class="btn btn-app" id="bt_huy_all" style="display: none"><i class="fa fa-crop"></i>Hủy </a>
+                </div>
+                <div class="col-lg-8">
+                    <form id="fromTimKiem">
+                        <div class="col-lg-4" style="margin-left: 170px; float: right">
+                            <label></label>
+                            <div>
+                                <div class="form-group input-group">
+                                    <input type="text" name="searchString" class="form-control" placeholder="Tìm Kiếm.........">
+                                    <span class="input-group-btn"><button class="btn btn-default" type="button" onclick="$('#fromTimKiem').submit();"><i class="fa fa-search"></i></button></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped" id="tb_chitiethoadon">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" name="checkAll" id="checlAll" /></th>
+                                <th>Id</th>
+                                <th>Mã sản phẩm</th>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng </th>
+                                <th>Đơn vị tính</th>
+                                <th>Giá nhập </th>
+                                <th>Tổng tiền</th>
+
+                                <th>Xóa</th>
+                            </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                @foreach (var item in Model.DanhSachChiTietHoaDonNhap)
+                                {
+                                    var sp = shop.SanPhams.Single(s => s.MaSanPham == item.MaSanPham);
+                                    <tr>
+                                        <td><input type="checkbox" name="check" id="check" /></td>
+                                        <td>@item.Id</td>
+                                        <td>@item.MaSanPham</td>
+                                        <td>@sp.TenSanPham</td>
+                                        <td>@item.SoLuong</td>
+                                        <td>@item.DonViTinh</td>
+                                        <td>@item.GiaNhap</td>
+                                        <td>@double.Parse(@item.TongTien.ToString()).ToString("#,##0")</td>
+
+                                        <td>
+                                            <button type="button" onclick="Xoa(this)" class="btn btn-sm">Xóa</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        @Html.PagedListPager(Model.DanhSachChiTietHoaDonNhap, page => Url.Action("ChiTietHoaDonNhap", new { page, id = @Model.DanhSachChiTietHoaDonNhap[0].MaHoaDon }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-2.1.4.min.js"></script>
+
+<script src="/Scripts/jquery.validationEngine-en.js"></script>
+<script src="/Scripts/jquery.validationEngine.js"></script>
+
+<Script type="text/javascript">
+
+   
+    function Huy() {
+        $("#bt_Sua").hide();
+        $("#bt_Them").show();
+    }
+    $("#bt_Sua").hide();
+    function Sua(el) {
+        event.preventDefault();
+        $("#bt_Sua").show();
+        $("#bt_Them").hide();
+
+    }
+
+    function Xoa(el) {
+       
+         var mid = el.parentNode.parentNode.cells[1].textContent;
+        $.ajax({
+            url: '/AdminQuanLyNhapHang/XoaSanPham/' + mid + '',
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function () {
+                            alert("Xóa thành công");
+                            window.location.reload();
+                        },
+                        error: function () {
+                            alert("Xóa thất bại");
+                            window.location.reload();
+                        }
+                    });
+    }
+    function XoaSua(el) {
+        $(".bd_them").on("click", ".edit", function (e) {        
+            $(this).closest('tr').remove();
+        
+        });
+        
+        var mid = $(el.parentNode.parentNode.cells[0]).find("input[name='idhd']").val();
+        $.ajax({
+            url: '/AdminQuanLyNhapHang/XoaSanPham/' + mid + '',
+            type: 'POST',
+            dataType: 'json',
+            success: function () {
+              
+            },
+            error: function () {
+               
+            }
+        });
+    }
+    $("#frmThem").validationEngine();
+
+
+    $(window).load(function () {
+        var max_fields = 10;
+        var wrapper = $(".bd_them");
+        var tr = $("#tr_them");
+        var add_button = $("#ThemTiep");
+
+        var x = 1;
+        $(add_button).click(function (e) {
+            e.preventDefault();
+
+            //if (x < max_fields) {
+            //    x++;
+                $(wrapper).append(tr.html());
+
+            //}
+
+        });
+
+        $(wrapper).on("click", ".remove_field", function (e) {
+            e.preventDefault();
+            $(this).closest('tr').remove();
+            //x--;
+        });
+
+        $("#Dialog_them").click(function () {
+            $("#ThemTiep").show();
+            $("#remove_them").show();
+            $("#remove_sua").hide();
+            $("#bt_Sua").hide();
+            $("#bt_Them").show();
+            $("table#tb_themsp").find("tr:gt(0)").remove();
+        });
+        $("#bt_Them").click(function () {
+            if (check() == true) {
+
+                $("table#tb_themsp > tbody > tr").each(function () {
+                    var idsp = $('#sp', this).val();
+                    var sl = $('#txtsl', this).val();
+                    var dvt = $('#txtdvt', this).val();
+                    var gianhap = $('#txtgianhap', this).val();
+
+                    $.ajax({
+                        url: '/AdminQuanLyNhapHang/ThemSanPham',
+                        type: 'POST',
+                        data: '{qlhd:' + JSON.stringify({
+                            ChiTietHoaDonNhap: {
+                                MaSanPham: idsp,
+                                SoLuong: sl,
+                                DonViTinh: dvt,
+                                GiaNhap: gianhap
+                            }
+                        }) + '}',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            return true;
+
+                        },
+                        error: function () {
+                            return false;
+                        }
+                    });
+
+
+                });
+                if (true) {
+                    alert("Thêm thành công");
+                    window.location.reload();
+                } else {
+                    alert("Thêm thất bại");
+                }
+
+            }
+            else {
+                alert("Điền đầy đủ thông tin");
+            }
+
+        });
+
+        $("#bt_Sua").click(function() {
+            if (check() == true) {
+
+                $("table#tb_themsp > tbody > tr").each(function () {
+                    var idhd = $('#idhd', this).val();
+                    var idsp = $('#sp', this).val();
+                    var sl = $('#txtsl', this).val();
+                    var dvt = $('#txtdvt', this).val();
+                    var gianhap = $('#txtgianhap', this).val();
+
+                    $.ajax({
+                        url: '/AdminQuanLyNhapHang/SuaChiTietHoaDon',
+                        type: 'POST',
+                        data: '{qlhd:' + JSON.stringify({
+                            ChiTietHoaDonNhap: {
+                                Id:idhd,
+                                MaSanPham: idsp,
+                                SoLuong: sl,
+                                DonViTinh: dvt,
+                                GiaNhap: gianhap
+                            }
+                        }) + '}',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            return true;
+
+                        },
+                        error: function () {
+                            return false;
+                        }
+                    });
+
+
+                });
+                if (true) {
+                    alert("Cập nhật thành công");
+                    window.location.reload();
+                } else {
+                    alert("Cập nhật thất bại");
+                }
+
+            }
+            else {
+                alert("Điền đầy đủ thông tin");
+            }
+        });
+        $("#Dialog_Sua").click(function () {
+            $("#ThemTiep").hide();
+            $("#remove_them").hide();
+            $("#remove_sua").show();
+            $("table#tb_themsp").find("tr:gt(0)").remove();
+            $("#bt_Sua").show();
+            $("#bt_Them").hide();
+            $("table#tb_chitiethoadon > tbody > tr").each(function () {
+                    var index = $(this).index();
+                    var idhd = $(this).find("td").eq(1).html();
+                    var idsp = $(this).find("td").eq(2).html();
+                    var sl = $(this).find("td").eq(4).html();
+                    var dvt = $(this).find("td").eq(5).html();
+                    var gianhap = $(this).find("td").eq(6).html();                  
+                    $(wrapper, this).append(tr.html());
+
+                    $(".bd_them tr:eq(" + index + ")").find("#sp").find("option[value='" + idsp + "']").each(function () {
+                        if ($(this).val() == idsp) {
+                            $(this).attr("selected", "selected");
+                        }
+                    });
+                    $(".bd_them tr:eq(" + index + ")").find("input[name='idhd']").val(idhd);
+                    $(".bd_them tr:eq("+index+")").find("input[name='sp']").val(idsp);
+                    $(".bd_them tr:eq("+index+")").find("input[name='soluong']").val(sl);
+                    $(".bd_them tr:eq("+index+")").find("input[name='donvitinh']").val(dvt);
+                    $(".bd_them tr:eq("+index+")").find("input[name='gianhap']").val(gianhap);
+                  
+                });
+             
+
+           
+           
+
+        });
+    });
+
+
+    
+    //});
+
+
+    function check() {
+        var ok;
+        $("table#tb_themsp > tbody > tr").each(function () {
+            var idsp = $('#sp', this).val();
+            var sl = $('#txtsl', this).val();
+            var dvt = $('#txtdvt', this).val();
+            var gianhap = $('#txtgianhap', this).val();
+            if (idsp != "" && sl != "" && sl>0 && dvt != "" && gianhap != "" && gianhap>0) {
+                ok = true;
+
+            }
+            else {
+                ok = false;
+
+            }
+        });
+        return ok;
+    };
+
+    var count = 0;
+    $(window).load(function () {
+        $('#checlAll').change(function () {
+            $("input:checkbox").prop('checked', $(this).prop("checked"));
+            if (this.checked) {
+                $("#bt_xoa_all").show();
+                $("#Dialog_them").hide();
+                $("#bt_huy_all").show();
+            }
+            else {
+
+                $("#bt_xoa_all").hide();
+                $("#Dialog_them").show();
+                $("#bt_huy_all").hide();
+            }
+        });
+
+        $("input[type='checkbox']").change(function (e) {
+            if ($(this).is(":checked")) {
+                count++;
+
+            } else {
+                count--;
+
+            }
+            if (count > 0) {
+                $("#bt_xoa_all").show();
+                $("#bt_huy_all").show();
+                $("#Dialog_them").hide();
+            } else {
+                $("#bt_xoa_all").hide();
+                $("#bt_huy_all").hide();
+                $("#Dialog_them").show();
+            }
+        });
+        $("#bt_huy_all").click(function () {
+            $("#bt_xoa_all").hide();
+            $("#bt_huy_all").hide();
+            $("#Dialog_them").show();
+            $("input:checkbox").attr('checked', false);
+        });
+        $("#bt_xoa_all").click(function () {
+            $("table#tb_chitiethoadon > tbody > tr").each(function () {
+                var ck = $(this).find("input[type='checkbox']");
+                var id = $(this).find("td").eq(1).html();
+                if (ck.is(":checked")) {
+                    $.ajax({
+                        url: '/AdminQuanLyNhapHang/XoaSanPham/' + id + '',
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function () {
+                            return true;
+                        },
+                        error: function () {
+                            return false;
+                        }
+                    });
+                }
+
+            });
+            if (true) {
+                alert("Xóa thành công");
+                window.location.reload();
+            } else {
+                alert("Xóa thất bại");
+                window.location.reload();
+            }
+        });
+    });
+</Script>

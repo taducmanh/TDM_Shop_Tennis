@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "ThongTinTaiKhoan";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model ShopBanDoTheThao.Models.QuanLyTaiKhoan
+<div class="col-lg-12">
+
+    @using (Html.BeginForm("ThemTaiKhoan", "AdminQuanlyTaiKhoan", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmThem" }))
+            {
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thông tin tài khoản</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="panel-body">
+                    <div class="col-lg-6">
+
+                        <input type="hidden" name="id" id="txtmatk" value="@Model.TaiKhoan.MaTaiKhoan">
+
+                        <div class="form-group">
+                            <label>Loại tài khoản</label>
+
+                            @Html.DropDownListFor(m => m.TaiKhoan.LoaiTaiKhoan, (List<SelectListItem>)ViewBag.LTK, "CHỌN LOẠI", new { @class = "form-control validate[required]", id = "ltk" })
+                        </div>
+                        <div class="form-group">
+                            <label>Tên tài khoản</label>
+                            @Html.TextBoxFor(m => m.TaiKhoan.TenTaiKhoan, new { id = "txttentk", @class = "form-control validate[required]", placeholder = "Tên tài khoản" })
+
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            @Html.TextBoxFor(m => m.TaiKhoan.Email, new { id = "txtemail", @class = "form-control validate[required]", type = "email", placeholder = "Email" })
+
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mật khẩu</label>
+                            @Html.PasswordFor(m => m.TaiKhoan.MatKhau, new { id = "txtmatkhau", @class = "form-control validate[required]", placeholder = "Mật khẩu" })
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Họ tên</label>
+                            @Html.TextBoxFor(m => m.ChiTietTaiKhoan.HoTen, new { id = "txthoten", @class = "form-control validate[required]", placeholder = "Họ tên" })
+                        </div>
+                        <div class="form-group">
+                            <label>Ảnh đại diện</label>
+                            <img src="@Model.ChiTietTaiKhoan.AnhDaiDien" style="width: 50px;height: 50px; border-radius: 50%;margin-right: 10px;margin-top: -2px;" />
+                            <div class="input-group">
+
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+
+                                        Chọn ảnh&hellip; <input type="file" name="file" class="form-control" multiple>
+                                    </span>
+                                </span>
+                                <input type="text" class="form-control " id="img" name="img" value="@Model.ChiTietTaiKhoan.AnhDaiDien" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Địa chỉ</label>
+                            @Html.TextAreaFor(m => m.ChiTietTaiKhoan.DiaChi, new { id = "txtdiachi", @class = "form-control", placeholder = "Địa chỉ", rows = 6 })
+                        </div>
+                        <div class="form-group">
+                            <label>Số điện thoại</label>
+                            @Html.TextBoxFor(m => m.ChiTietTaiKhoan.SoDienThoai, new { id = "txtsdt", @class = "form-control ", type = "number", placeholder = "Số điện thoại" })
+                        </div>
+                    </div>
+                </div>
+                @*</div>*@
+            </div>
+
+            <div class="modal-footer">
+
+                <input type="submit" name="submit" id="bt_Sua" class="btn btn-default" value="Sửa" />
+                <input type="reset" class="btn btn-default" onclick="Huy()" value="Làm lại">
+            </div>
+
+        </div>
+
+    }
+</div>
+
+<script>
+    $("#bt_Sua").hide();
+    function Huy() {
+        $("#bt_Sua").hide();
+        $("#bt_Them").show();
+    }
+
+</script>

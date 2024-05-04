@@ -1,0 +1,59 @@
+﻿@using ShopBanDoTheThao.Models
+@{
+    var tinMoi = (List<TinTuc>) ViewData["TinMoiNhat"];
+}
+<div class="menu-recent block">
+    <div class="title-group"><h2>Tin mới nhất</h2></div>
+    <div id="latest-news" class="owl-container">
+        <div class="owl">
+            <div>
+                <div class="item-inner">
+                    <div class="images-container">
+                        <a href="#"> <img alt="" src="@tinMoi[0].AnhDaiDien" /> </a>
+                    </div>
+                    <div class="des-container">
+                        <div class="date-comments">
+                            <div class="time"><span class="date">@tinMoi[0].NgayTao</span></div>
+                        </div>
+                        <div class="des">
+                            <h4><a href="#" class="title-blog"><span>@tinMoi[0].TieuDe</span></a></h4>
+                           @tinMoi[0].MoTa
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="item-inner">
+                    <div class="images-container">
+                        <a href="#"> <img alt="" src="@tinMoi[1].AnhDaiDien" /> </a>
+                    </div>
+                    <div class="des-container">
+                        <div class="date-comments">
+                            <div class="time"><span class="date">@tinMoi[1].NgayTao</span></div>
+                        </div>
+                        <div class="des">
+                            <h4><a href="#" class="title-blog"><span>@tinMoi[1].TieuDe</span></a></h4>
+                           @tinMoi[1].MoTa
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="item-inner">
+                    <div class="images-container">
+                        <a href="#"> <img alt="" src="@tinMoi[2].AnhDaiDien." /> </a>
+                    </div>
+                    <div class="des-container">
+                        <div class="date-comments">
+                            <div class="time"><span class="date">@tinMoi[2].NgayTao</span></div>
+                        </div>
+                        <div class="des">
+                            <h4><a href="#" class="title-blog"><span>@tinMoi[2].TieuDe</span></a></h4>
+                           @tinMoi[2].MoTa
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.block - Latest News -->

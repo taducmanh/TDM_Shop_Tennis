@@ -1,0 +1,269 @@
+﻿@using ShopBanDoTheThao.Models
+<link href="~/Content/AdminLTE.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "DetailProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ShopEntities shop=new ShopEntities();
+    //var sanpham = (SanPham)Model;
+    var sanpham = (SanPham)ViewData["sp"];
+    var chitietsanpham = (ChiTietSanPham)ViewData["ChiTiet"];
+
+
+}
+
+
+<link href="~/Content/bootstrap.min.css" rel="stylesheet"/>
+<link href="~/Content/animate.css" rel="stylesheet"/>
+<link href="~/Content/owl.carousel.css" rel="stylesheet" />
+<link href="~/Content/jquery.bxslider.css" rel="stylesheet" />
+<link href="~/Content/responsive.css" rel="stylesheet" />
+<link href="~/Content/style.css" rel="stylesheet" />
+<link href="~/Content/cloud-zoom.css" rel="stylesheet"/>
+<body>
+
+    <div class="breadcrumbs">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/Home/Index">Trang chủ</a></li>
+                <li><a href="#">Chuyên mục</a></li>
+                <li class="active">Chi tiết sản phẩm</li>
+            </ul>
+        </div>
+    </div><!-- /.breadcrumbs -->
+    <div class="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-9 col-right">
+                    <div class="product-view">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="product-img-box">
+                                    <p class="product-image">
+                                        <div class="zoom-section">
+                                            <div class="zoom-small-image">
+                                                <a href='@sanpham.AnhDaiDien' class='cloud-zoom' id='zoom1' rel="adjustX:10, adjustY:-4"><img src="@sanpham.AnhDaiDien" alt='' title="Optional title display" /></a>
+                                            </div>
+                                        </div>
+                                    </p>
+
+                                </div>
+                            </div>
+                            <div class="product-shop col-sm-7">
+                                <div class="product-name">
+                                    <h1>@sanpham.TenSanPham</h1>
+                                </div>
+                                <div class="ratings">
+                                    <div class="rating-box">
+                                        <div style="width:67%" class="rating"></div>
+                                    </div>
+                                    <span class="amount"><a href="#">@sanpham.LuotXem Lượt xem</a></span>
+                                </div>
+                                <div class="box-container2">
+                                    <div class="price-box">
+                                        @if (sanpham.GiaGiam > 0)
+                                        {
+                                            <p class="special-price">
+                                                <span class="price-label" style="font-size: 35px;">Giá : </span>
+                                                <span class="price" style="font-size: 35px;">@double.Parse(sanpham.GiaGiam.ToString()).ToString("#,##0") VNĐ</span>
+                                            </p>
+                                            <p class="old-price">
+                                                <span class="price-label">Giá NY: </span>
+                                                <span class="price">@double.Parse(sanpham.Gia.ToString()).ToString("#,##0") VNĐ</span>
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                            <p class="special-price">
+                                                <span class="price-label">Giá NY: </span>
+                                                <span class="price">@double.Parse(sanpham.Gia.ToString()).ToString("#,##0") VNĐ</span>
+                                            </p>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="short-description">
+                                    <div class="std">
+                                        @if (chitietsanpham != null)
+                                        {
+                                            @chitietsanpham.MoTa
+                                        }
+                                        else
+                                        {
+                                            <h2> Không có mô tả</h2>
+                                        }
+                                    </div>
+                                </div>
+                                @if (sanpham.SoLuong > 0)
+                                {
+                                    <p class="availability in-stock">Tình trạng: <span>Còn hàng</span></p>
+                                }
+                                else
+                                {
+                                    <p class="availability in-stock">Tình trạng: <span>Hết hàng</span></p>
+                                }
+
+
+                                <form class="form-horizontal">
+                                    <div class="form-group ">
+                                        <label class="col-md-2 col-sm-3 control-label">Số lượng:</label>
+                                        <div class="col-md-3 col-sm-5">
+                                            <div class="input-group qty">
+                                                <span class="input-group-btn">
+                                                    <button class="btn" type="button" id="btnGiam">-</button>
+                                                </span>
+                                                <input type="number" id="SoLuong" style="width: 75px;" name="soLuong" class="form-control" value="3">
+                                                <span class="input-group-btn">
+                                                    <button class="btn" type="button" id="btnTang">+</button>
+                                                </span>
+                                            </div><!-- /input-group -->
+                                        </div>
+                                    </div>
+                                    @if (sanpham.SoLuong > 0)
+                                    {
+                                        <a href="javascript:;" onclick="ThemGioHang(@sanpham.MaSanPham)" class="btn btn-danger btn-cart">Thêm vào giỏ</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-danger btn-cart">Liên hệ để biết thêm chi tiết</a>
+                                    }
+                                </form>
+
+
+                            </div>
+                        </div>
+                        <div class="product-tab tab-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#product-desc" data-toggle="tab">Chi tiết</a></li>
+                                <li><a href="#product-binhluan" data-toggle="tab">Bình luận</a></li>
+
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="product-desc">
+
+                                    @if (chitietsanpham != null)
+                                    {
+                                        @Html.Raw(chitietsanpham.ChiTiet)
+                                    }
+                                    else
+                                    {
+                                        <h2> Không có chi tiết</h2>
+                                    }
+
+                                </div>
+                                <div class="tab-pane" id="product-binhluan">
+                                    <div class="fb-like" data-width="800" data-href="@Request.Url.AbsoluteUri" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                                    <div class="fb-comments" data-width="800" data-href="@Request.Url.AbsoluteUri" data-numposts="5"></div>
+                                </div>
+
+                            </div>
+                        </div><!-- /.product-tab -->
+                    </div><!-- /.product-view -->
+                    @Html.Partial("SanPhamBanChay")
+                </div><!-- /.col-right -->
+                @Html.Partial("SanPhamLienQuan")
+            </div>
+        </div>
+    </div><!-- /.main -->
+</body>
+@Html.Partial("ChuyenMucKhac")
+@Html.Partial("HangSXPhoBien")
+<script src="~/Scripts/jquery-2.1.4.min.js"></script>
+<script src="~/Scripts/jquery-ui.min.js"></script>
+
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.bxslider.min.js"></script>
+<script src="~/Scripts/owl.carousel.min.js"></script>
+<script src="~/Scripts/main.js"></script>
+
+<script src="~/Scripts/cloud-zoom.js"></script>
+<div id="fb-root"></div>
+
+<script type="text/javascript">
+   
+    function ThemGioHang(masp) {
+        var sl = $('#SoLuong').val();
+        $.ajax({
+            url: '/GioHang/ThemVaoGioHang/?id=' + masp + '&soLuong='+sl+'',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                var json = JSON.parse(data);
+                alert(json);
+                window.location.reload();
+            },
+            error: function (err) {
+                alert("Đã xảy ra lỗi");
+            }
+        });
+    };
+
+    $(document).ready(function () {
+        $("#btnGiam").click(function () {
+           
+            if (parseInt($("#SoLuong").val()) != 0) {
+                var gt = parseInt($("#SoLuong").val()) - 1;
+                $("#SoLuong").val(gt);
+               
+            }
+
+        });
+        $("#btnTang").click(function () {
+
+            var gt = parseInt($("#SoLuong").val()) + 1;
+            $("#SoLuong").val(gt);
+        });
+
+
+        $(".mega-menu-category").css('display', 'none');
+        /* special-offer slider */
+        $("#special-offer .owl").owlCarousel({
+            autoPlay : false,
+            items : 1,
+            itemsDesktop : [1199,1],
+            itemsDesktopSmall : [991,1],
+            itemsTablet: [767,2],
+            itemsMobile : [480,1],
+            slideSpeed : 3000,
+            paginationSpeed : 3000,
+            rewindSpeed : 3000,
+            navigation : true,
+            stopOnHover : true,
+            pagination : false,
+            scrollPerPage:true,
+        });
+        /* featured-products slider */
+        $("#featured-products .owl").owlCarousel({
+            autoPlay : false,
+            items : 4,
+            itemsDesktop : [1199,3],
+            itemsDesktopSmall : [991,2],
+            itemsTablet: [767,2],
+            itemsMobile : [480,1],
+            slideSpeed : 3000,
+            paginationSpeed : 3000,
+            rewindSpeed : 3000,
+            navigation : true,
+            stopOnHover : true,
+            pagination : false,
+            scrollPerPage:true,
+        });
+        /* .thumbnail-container product image slider */
+        $('.thumbnail-container .bxslider').bxSlider({
+            slideWidth: 94,
+            slideMargin: 5,
+            minSlides: 4,
+            maxSlides: 4,
+            pager: false,
+            speed: 500,
+            pause: 3000
+        });
+    });
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.6";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+</script>

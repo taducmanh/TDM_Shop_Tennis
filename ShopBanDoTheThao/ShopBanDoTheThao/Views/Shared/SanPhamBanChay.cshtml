@@ -1,0 +1,130 @@
+﻿@using ShopBanDoTheThao.Models
+
+@{
+    var shop = new ShopEntities();
+    int thang = DateTime.Now.Month;
+
+    var dshd = shop.HoaDons.Where(h => h.TrangThai == true).ToList();
+    var dsDonHangDaDuyet = (from item in dshd let thangduyet = DateTime.Parse(item.NgayDuyet.ToString()).Month where thangduyet == thang select item).ToList();
+    var dsChiTiet = dsDonHangDaDuyet.SelectMany(item => shop.ChiTietHoaDons.Where(c => c.MaHoaDon == item.MaHoaDon).OrderByDescending(c => c.SoLuong).Skip(0).Take(5).ToList()).ToList();
+
+    var dsBanChay =
+        dsChiTiet.GroupBy(s => s.MaSanPham)
+            .Select(
+                cl => new SanPhamBanChay { MaSanPham = cl.First().MaSanPham, SoLuong = cl.Sum(c => c.SoLuong) })
+            .ToList();
+    dsBanChay.OrderByDescending(c => c.SoLuong).ToList();
+    var dsSanPham= dsBanChay.Select(item => shop.SanPhams.SingleOrDefault(s => s.MaSanPham == item.MaSanPham)).ToList();
+}
+
+<div class="featuredproductslider-container">
+    <div class="title-group1">
+        <h2>Sản phẩm bán chạy</h2>
+    </div>
+    <div id="featured-products" class="owl-container">
+        <div class="owl">
+            @foreach (SanPham sp in dsSanPham)
+            {
+                <div class='productslider-item item'>
+                    <div class="item-inner">
+                        <div class="images-container">
+                            <div class="product_icon">
+                                <div class='new-icon'><span>Mới</span></div>
+                                @if (sp.GiaGiam > 0)
+                                {
+                                    <div class="sale-icon"><span>@Math.Round(double.Parse((100-((sp.GiaGiam*100)/sp.Gia)).ToString())) %</span></div>
+                                }
+                            </div>
+                            <a href="/QuanLySanPham/ChiTietSanPham/@sp.MaSanPham" onclick="TangLuot(@sp.MaSanPham)" title="@sp.TenSanPham" class="product-image">
+                                <img src="@sp.AnhDaiDien" alt="@sp.TenSanPham" onclick="TangLuot(@sp.MaSanPham)" style="height: 200px"/>
+                            </a>
+                        </div>
+                        <div class="des-container">
+                            <h2 class="product-name">
+                                <a href="/QuanLySanPham/ChiTietSanPham/@sp.MaSanPham" onclick="TangLuot(@sp.MaSanPham)" title="@sp.TenSanPham">
+                                    @if (sp.TenSanPham.Length > 20)
+                                    {
+                                        @sp.TenSanPham.Substring(0, 20)
+                                        ;
+                                    }
+                                    else
+                                    {
+                                        @sp.TenSanPham
+                                        ;
+                                    }
+                                </a>
+                            </h2>
+                            <div class="price-box">
+                                @if (sp.GiaGiam > 0)
+                                {
+                                    <p class="special-price">
+                                        <span class="price-label">Giá : </span>
+                                        <span class="price">@double.Parse(sp.GiaGiam.ToString()).ToString("#,##0")&nbsp;VNĐ</span>
+                                    </p>
+                                    <p class="old-price">
+                                        <span class="price-label">Giá NY: </span>
+                                        <span class="price">@double.Parse(sp.Gia.ToString()).ToString("#,##0")&nbsp;VNĐ</span>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="special-price">
+                                        <span class="price-label">Giá NY: </span>
+                                        <span class="price">@double.Parse(sp.Gia.ToString()).ToString("#,##0")&nbsp;VNĐ</span>
+                                    </p>
+                                    <p class="old-price">
+                                        <span class="price-label">&nbsp;</span>
+                                        <span class="price">&nbsp;</span>
+                                    </p>
+                                }
+                            </div>
+                            <div class="ratings">
+                                <div class="rating-box">
+                                    <div class="rating" style="width: 67%"></div>
+                                </div>
+                                <span class="amount"><a href="#">@sp.LuotXem Lượt xem</a></span>
+                               
+                                    <a href="javascript:;" style="width: 100%;"  class="btn btn-danger btn-cart" onclick="ThemGioHang(@sp.MaSanPham)">Thêm vào giỏ</a>
+                                    
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+    function ThemGioHang(masp) {
+        var sl = $('#soLuong').val();
+        $.ajax({
+            url: '/GioHang/ThemVaoGioHang/?id=' + masp + '&soLuong=' + sl + '',
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+                var json = JSON.parse(data);
+                alert(json);
+                window.location.reload();
+            },
+            error: function(err) {
+                alert("Đã xảy ra lỗi");
+            }
+        });
+    };
+    function TangLuot(id) {
+
+        $.ajax({
+            url: '/QuanLySanPham/TangLuotXem/' + id + '',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+
+            },
+            error: function (err) {
+
+            }
+        });
+    };
+</script> 

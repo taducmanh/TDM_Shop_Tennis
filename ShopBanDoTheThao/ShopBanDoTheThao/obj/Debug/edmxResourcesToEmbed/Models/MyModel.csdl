@@ -1,0 +1,447 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="ShopEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CaiDats" EntityType="ShopModel.CaiDat" />
+    <EntitySet Name="ChiTietHoaDonNhaps" EntityType="ShopModel.ChiTietHoaDonNhap" />
+    <EntitySet Name="ChiTietHoaDons" EntityType="ShopModel.ChiTietHoaDon" />
+    <EntitySet Name="ChiTietSanPhams" EntityType="ShopModel.ChiTietSanPham" />
+    <EntitySet Name="ChiTietTaiKhoans" EntityType="ShopModel.ChiTietTaiKhoan" />
+    <EntitySet Name="ChuyenMucs" EntityType="ShopModel.ChuyenMuc" />
+    <EntitySet Name="DKBanTins" EntityType="ShopModel.DKBanTin" />
+    <EntitySet Name="HangSanXuats" EntityType="ShopModel.HangSanXuat" />
+    <EntitySet Name="HoaDonNhaps" EntityType="ShopModel.HoaDonNhap" />
+    <EntitySet Name="KhachHangs" EntityType="ShopModel.KhachHang" />
+    <EntitySet Name="LoaiTaiKhoans" EntityType="ShopModel.LoaiTaiKhoan" />
+    <EntitySet Name="NhaPhanPhois" EntityType="ShopModel.NhaPhanPhois" />
+    <EntitySet Name="QuangCaos" EntityType="ShopModel.QuangCao" />
+    <EntitySet Name="SanPhams" EntityType="ShopModel.SanPham" />
+    <EntitySet Name="Slides" EntityType="ShopModel.Slide" />
+    <EntitySet Name="sysdiagrams" EntityType="ShopModel.sysdiagram" />
+    <EntitySet Name="TaiKhoans" EntityType="ShopModel.TaiKhoan" />
+    <EntitySet Name="TinTucs" EntityType="ShopModel.TinTuc" />
+    <AssociationSet Name="FK_ChiTietHoaDonNhaps_HoaDonNhaps" Association="ShopModel.FK_ChiTietHoaDonNhaps_HoaDonNhaps">
+      <End Role="HoaDonNhap" EntitySet="HoaDonNhaps" />
+      <End Role="ChiTietHoaDonNhap" EntitySet="ChiTietHoaDonNhaps" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ChiTietHoaDonNhaps_SanPhams" Association="ShopModel.FK_ChiTietHoaDonNhaps_SanPhams">
+      <End Role="SanPham" EntitySet="SanPhams" />
+      <End Role="ChiTietHoaDonNhap" EntitySet="ChiTietHoaDonNhaps" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetailBill_Products" Association="ShopModel.FK_DetailBill_Products">
+      <End Role="SanPham" EntitySet="SanPhams" />
+      <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDons" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ChiTietSanPhams_NhaSanXuats" Association="ShopModel.FK_ChiTietSanPhams_NhaSanXuats">
+      <End Role="HangSanXuat" EntitySet="HangSanXuats" />
+      <End Role="ChiTietSanPham" EntitySet="ChiTietSanPhams" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetailProducts_Products" Association="ShopModel.FK_DetailProducts_Products">
+      <End Role="SanPham" EntitySet="SanPhams" />
+      <End Role="ChiTietSanPham" EntitySet="ChiTietSanPhams" />
+    </AssociationSet>
+    <AssociationSet Name="FK_InformationAccounts_Accounts" Association="ShopModel.FK_InformationAccounts_Accounts">
+      <End Role="TaiKhoan" EntitySet="TaiKhoans" />
+      <End Role="ChiTietTaiKhoan" EntitySet="ChiTietTaiKhoans" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Products_Categories" Association="ShopModel.FK_Products_Categories">
+      <End Role="ChuyenMuc" EntitySet="ChuyenMucs" />
+      <End Role="SanPham" EntitySet="SanPhams" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HoaDonNhaps_NhaPhanPhois" Association="ShopModel.FK_HoaDonNhaps_NhaPhanPhois">
+      <End Role="NhaPhanPhois" EntitySet="NhaPhanPhois" />
+      <End Role="HoaDonNhap" EntitySet="HoaDonNhaps" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HoaDonNhaps_TaiKhoans" Association="ShopModel.FK_HoaDonNhaps_TaiKhoans">
+      <End Role="TaiKhoan" EntitySet="TaiKhoans" />
+      <End Role="HoaDonNhap" EntitySet="HoaDonNhaps" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Accounts_TypeAccounts" Association="ShopModel.FK_Accounts_TypeAccounts">
+      <End Role="LoaiTaiKhoan" EntitySet="LoaiTaiKhoans" />
+      <End Role="TaiKhoan" EntitySet="TaiKhoans" />
+    </AssociationSet>
+    <AssociationSet Name="SanPhams_NhaPhanPhois" Association="ShopModel.SanPhams_NhaPhanPhois">
+      <End Role="NhaPhanPhois" EntitySet="NhaPhanPhois" />
+      <End Role="SanPham" EntitySet="SanPhams" />
+    </AssociationSet>
+    <EntitySet Name="HoaDons" EntityType="ShopModel.HoaDon" />
+    <AssociationSet Name="FK_DetailBill_Bills" Association="ShopModel.FK_DetailBill_Bills">
+      <End Role="HoaDon" EntitySet="HoaDons" />
+      <End Role="ChiTietHoaDon" EntitySet="ChiTietHoaDons" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="CaiDat">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Logo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="GioLamViec" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="GiaoHang" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HoanTien" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SDTLienHe" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="EmailLienHe" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FaceBook" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="GooglePlus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Twiter" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="YouTube" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Instargram" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="GoogleMap" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MatKhauMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="ChiTietHoaDonNhap">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaHoaDon" Type="Int32" />
+    <Property Name="MaSanPham" Type="Int32" />
+    <Property Name="SoLuong" Type="Int32" />
+    <Property Name="DonViTinh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="GiaNhap" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="TongTien" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="HoaDonNhap" Relationship="ShopModel.FK_ChiTietHoaDonNhaps_HoaDonNhaps" FromRole="ChiTietHoaDonNhap" ToRole="HoaDonNhap" />
+    <NavigationProperty Name="SanPham" Relationship="ShopModel.FK_ChiTietHoaDonNhaps_SanPhams" FromRole="ChiTietHoaDonNhap" ToRole="SanPham" />
+  </EntityType>
+  <EntityType Name="ChiTietHoaDon">
+    <Key>
+      <PropertyRef Name="MaChiTietHoaDon" />
+    </Key>
+    <Property Name="MaChiTietHoaDon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaHoaDon" Type="Int32" />
+    <Property Name="MaSanPham" Type="Int32" />
+    <Property Name="SoLuong" Type="Int32" />
+    <Property Name="TongGia" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="SanPham" Relationship="ShopModel.FK_DetailBill_Products" FromRole="ChiTietHoaDon" ToRole="SanPham" />
+    <NavigationProperty Name="HoaDon" Relationship="ShopModel.FK_DetailBill_Bills" FromRole="ChiTietHoaDon" ToRole="HoaDon" />
+  </EntityType>
+  <EntityType Name="ChiTietSanPham">
+    <Key>
+      <PropertyRef Name="MaChiTietSanPham" />
+    </Key>
+    <Property Name="MaChiTietSanPham" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaSanPham" Type="Int32" />
+    <Property Name="MaNhaSanXuat" Type="Int32" />
+    <Property Name="MoTa" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
+    <Property Name="ChiTiet" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="HangSanXuat" Relationship="ShopModel.FK_ChiTietSanPhams_NhaSanXuats" FromRole="ChiTietSanPham" ToRole="HangSanXuat" />
+    <NavigationProperty Name="SanPham" Relationship="ShopModel.FK_DetailProducts_Products" FromRole="ChiTietSanPham" ToRole="SanPham" />
+  </EntityType>
+  <EntityType Name="ChiTietTaiKhoan">
+    <Key>
+      <PropertyRef Name="MaChitietTaiKhoan" />
+    </Key>
+    <Property Name="MaChitietTaiKhoan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaTaiKhoan" Type="Int32" />
+    <Property Name="HoTen" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DiaChi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="SoDienThoai" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+    <Property Name="AnhDaiDien" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="TaiKhoan" Relationship="ShopModel.FK_InformationAccounts_Accounts" FromRole="ChiTietTaiKhoan" ToRole="TaiKhoan" />
+  </EntityType>
+  <EntityType Name="ChuyenMuc">
+    <Key>
+      <PropertyRef Name="MaChuyenMuc" />
+    </Key>
+    <Property Name="MaChuyenMuc" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaChuyenMucCha" Type="Int32" />
+    <Property Name="TenChuyenMuc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DacBiet" Type="Boolean" Nullable="false" />
+    <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SanPhams" Relationship="ShopModel.FK_Products_Categories" FromRole="ChuyenMuc" ToRole="SanPham" />
+  </EntityType>
+  <EntityType Name="DKBanTin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="HangSanXuat">
+    <Key>
+      <PropertyRef Name="MaHang" />
+    </Key>
+    <Property Name="MaHang" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TenHang" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LinkWeb" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="AnhDaiDien" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ChiTietSanPhams" Relationship="ShopModel.FK_ChiTietSanPhams_NhaSanXuats" FromRole="HangSanXuat" ToRole="ChiTietSanPham" />
+  </EntityType>
+  <EntityType Name="HoaDonNhap">
+    <Key>
+      <PropertyRef Name="MaHoaDon" />
+    </Key>
+    <Property Name="MaHoaDon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaNhaPhanPhoi" Type="Int32" />
+    <Property Name="NgayTao" Type="DateTime" Precision="3" />
+    <Property Name="KieuThanhToan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MaTaiKhoan" Type="Int32" />
+    <NavigationProperty Name="ChiTietHoaDonNhaps" Relationship="ShopModel.FK_ChiTietHoaDonNhaps_HoaDonNhaps" FromRole="HoaDonNhap" ToRole="ChiTietHoaDonNhap" />
+    <NavigationProperty Name="NhaPhanPhois" Relationship="ShopModel.FK_HoaDonNhaps_NhaPhanPhois" FromRole="HoaDonNhap" ToRole="NhaPhanPhois" />
+    <NavigationProperty Name="TaiKhoan" Relationship="ShopModel.FK_HoaDonNhaps_TaiKhoans" FromRole="HoaDonNhap" ToRole="TaiKhoan" />
+  </EntityType>
+  <EntityType Name="KhachHang">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="TenKH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="GioiTinh" Type="Boolean" Nullable="false" />
+    <Property Name="DiaChi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="SDT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="LoaiTaiKhoan">
+    <Key>
+      <PropertyRef Name="MaLoai" />
+    </Key>
+    <Property Name="MaLoai" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TenLoai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MoTa" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="TaiKhoans" Relationship="ShopModel.FK_Accounts_TypeAccounts" FromRole="LoaiTaiKhoan" ToRole="TaiKhoan" />
+  </EntityType>
+  <EntityType Name="NhaPhanPhois">
+    <Key>
+      <PropertyRef Name="MaNhaPhanPhoi" />
+    </Key>
+    <Property Name="MaNhaPhanPhoi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TenNhaPhanPhoi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="DiaChi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SoDienThoai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MoTa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="HoaDonNhaps" Relationship="ShopModel.FK_HoaDonNhaps_NhaPhanPhois" FromRole="NhaPhanPhois" ToRole="HoaDonNhap" />
+    <NavigationProperty Name="SanPhams" Relationship="ShopModel.SanPhams_NhaPhanPhois" FromRole="NhaPhanPhois" ToRole="SanPham" />
+  </EntityType>
+  <EntityType Name="QuangCao">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AnhDaiDien" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LinkQuangCao" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MoTa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="SanPham">
+    <Key>
+      <PropertyRef Name="MaSanPham" />
+    </Key>
+    <Property Name="MaSanPham" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaChuyenMuc" Type="Int32" />
+    <Property Name="TenSanPham" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="AnhDaiDien" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+    <Property Name="Gia" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="GiaGiam" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="SoLuong" Type="Int32" />
+    <Property Name="TrangThai" Type="Boolean" />
+    <Property Name="LuotXem" Type="Int32" />
+    <Property Name="DacBiet" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ChiTietHoaDonNhaps" Relationship="ShopModel.FK_ChiTietHoaDonNhaps_SanPhams" FromRole="SanPham" ToRole="ChiTietHoaDonNhap" />
+    <NavigationProperty Name="ChiTietHoaDons" Relationship="ShopModel.FK_DetailBill_Products" FromRole="SanPham" ToRole="ChiTietHoaDon" />
+    <NavigationProperty Name="ChiTietSanPhams" Relationship="ShopModel.FK_DetailProducts_Products" FromRole="SanPham" ToRole="ChiTietSanPham" />
+    <NavigationProperty Name="ChuyenMuc" Relationship="ShopModel.FK_Products_Categories" FromRole="SanPham" ToRole="ChuyenMuc" />
+    <NavigationProperty Name="NhaPhanPhois" Relationship="ShopModel.SanPhams_NhaPhanPhois" FromRole="SanPham" ToRole="NhaPhanPhois" />
+  </EntityType>
+  <EntityType Name="Slide">
+    <Key>
+      <PropertyRef Name="MaAnh" />
+    </Key>
+    <Property Name="MaAnh" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TieuDe" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="TieuDe1" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="TieuDe2" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="MoTa1" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="MoTa2" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="MoTa3" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="MoTa4" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="LinkAnh" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="TaiKhoan">
+    <Key>
+      <PropertyRef Name="MaTaiKhoan" />
+    </Key>
+    <Property Name="MaTaiKhoan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LoaiTaiKhoan" Type="Int32" />
+    <Property Name="TenTaiKhoan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MatKhau" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ChiTietTaiKhoans" Relationship="ShopModel.FK_InformationAccounts_Accounts" FromRole="TaiKhoan" ToRole="ChiTietTaiKhoan" />
+    <NavigationProperty Name="HoaDonNhaps" Relationship="ShopModel.FK_HoaDonNhaps_TaiKhoans" FromRole="TaiKhoan" ToRole="HoaDonNhap" />
+    <NavigationProperty Name="LoaiTaiKhoan1" Relationship="ShopModel.FK_Accounts_TypeAccounts" FromRole="TaiKhoan" ToRole="LoaiTaiKhoan" />
+  </EntityType>
+  <EntityType Name="TinTuc">
+    <Key>
+      <PropertyRef Name="MaTinTuc" />
+    </Key>
+    <Property Name="MaTinTuc" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TieuDe" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="AnhDaiDien" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MoTa" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="NgayTao" Type="DateTime" Precision="3" />
+    <Property Name="ChiTiet" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LuotXem" Type="Int32" />
+  </EntityType>
+  <Association Name="FK_ChiTietHoaDonNhaps_HoaDonNhaps">
+    <End Type="ShopModel.HoaDonNhap" Role="HoaDonNhap" Multiplicity="0..1" />
+    <End Type="ShopModel.ChiTietHoaDonNhap" Role="ChiTietHoaDonNhap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HoaDonNhap">
+        <PropertyRef Name="MaHoaDon" />
+      </Principal>
+      <Dependent Role="ChiTietHoaDonNhap">
+        <PropertyRef Name="MaHoaDon" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ChiTietHoaDonNhaps_SanPhams">
+    <End Type="ShopModel.SanPham" Role="SanPham" Multiplicity="0..1" />
+    <End Type="ShopModel.ChiTietHoaDonNhap" Role="ChiTietHoaDonNhap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SanPham">
+        <PropertyRef Name="MaSanPham" />
+      </Principal>
+      <Dependent Role="ChiTietHoaDonNhap">
+        <PropertyRef Name="MaSanPham" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetailBill_Products">
+    <End Type="ShopModel.SanPham" Role="SanPham" Multiplicity="0..1" />
+    <End Type="ShopModel.ChiTietHoaDon" Role="ChiTietHoaDon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SanPham">
+        <PropertyRef Name="MaSanPham" />
+      </Principal>
+      <Dependent Role="ChiTietHoaDon">
+        <PropertyRef Name="MaSanPham" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ChiTietSanPhams_NhaSanXuats">
+    <End Type="ShopModel.HangSanXuat" Role="HangSanXuat" Multiplicity="0..1" />
+    <End Type="ShopModel.ChiTietSanPham" Role="ChiTietSanPham" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HangSanXuat">
+        <PropertyRef Name="MaHang" />
+      </Principal>
+      <Dependent Role="ChiTietSanPham">
+        <PropertyRef Name="MaNhaSanXuat" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetailProducts_Products">
+    <End Type="ShopModel.SanPham" Role="SanPham" Multiplicity="0..1" />
+    <End Type="ShopModel.ChiTietSanPham" Role="ChiTietSanPham" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SanPham">
+        <PropertyRef Name="MaSanPham" />
+      </Principal>
+      <Dependent Role="ChiTietSanPham">
+        <PropertyRef Name="MaSanPham" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_InformationAccounts_Accounts">
+    <End Type="ShopModel.TaiKhoan" Role="TaiKhoan" Multiplicity="0..1" />
+    <End Type="ShopModel.ChiTietTaiKhoan" Role="ChiTietTaiKhoan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TaiKhoan">
+        <PropertyRef Name="MaTaiKhoan" />
+      </Principal>
+      <Dependent Role="ChiTietTaiKhoan">
+        <PropertyRef Name="MaTaiKhoan" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Products_Categories">
+    <End Type="ShopModel.ChuyenMuc" Role="ChuyenMuc" Multiplicity="0..1" />
+    <End Type="ShopModel.SanPham" Role="SanPham" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChuyenMuc">
+        <PropertyRef Name="MaChuyenMuc" />
+      </Principal>
+      <Dependent Role="SanPham">
+        <PropertyRef Name="MaChuyenMuc" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HoaDonNhaps_NhaPhanPhois">
+    <End Type="ShopModel.NhaPhanPhois" Role="NhaPhanPhois" Multiplicity="0..1" />
+    <End Type="ShopModel.HoaDonNhap" Role="HoaDonNhap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhaPhanPhois">
+        <PropertyRef Name="MaNhaPhanPhoi" />
+      </Principal>
+      <Dependent Role="HoaDonNhap">
+        <PropertyRef Name="MaNhaPhanPhoi" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HoaDonNhaps_TaiKhoans">
+    <End Type="ShopModel.TaiKhoan" Role="TaiKhoan" Multiplicity="0..1" />
+    <End Type="ShopModel.HoaDonNhap" Role="HoaDonNhap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TaiKhoan">
+        <PropertyRef Name="MaTaiKhoan" />
+      </Principal>
+      <Dependent Role="HoaDonNhap">
+        <PropertyRef Name="MaTaiKhoan" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Accounts_TypeAccounts">
+    <End Type="ShopModel.LoaiTaiKhoan" Role="LoaiTaiKhoan" Multiplicity="0..1" />
+    <End Type="ShopModel.TaiKhoan" Role="TaiKhoan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LoaiTaiKhoan">
+        <PropertyRef Name="MaLoai" />
+      </Principal>
+      <Dependent Role="TaiKhoan">
+        <PropertyRef Name="LoaiTaiKhoan" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SanPhams_NhaPhanPhois">
+    <End Type="ShopModel.NhaPhanPhois" Role="NhaPhanPhois" Multiplicity="*" />
+    <End Type="ShopModel.SanPham" Role="SanPham" Multiplicity="*" />
+  </Association>
+  <EntityType Name="HoaDon">
+    <Key>
+      <PropertyRef Name="MaHoaDon" />
+    </Key>
+    <Property Name="MaHoaDon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TrangThai" Type="Boolean" />
+    <Property Name="NgayTao" Type="DateTime" Precision="3" />
+    <Property Name="NgayDuyet" Type="DateTime" Precision="3" />
+    <Property Name="TongGia" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="TenKH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="GioiTinh" Type="Boolean" Nullable="false" />
+    <Property Name="Diachi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SDT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DiaChiGiaoHang" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+    <Property Name="ThoiGianGiaoHang" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="ChiTietHoaDons" Relationship="ShopModel.FK_DetailBill_Bills" FromRole="HoaDon" ToRole="ChiTietHoaDon" />
+  </EntityType>
+  <Association Name="FK_DetailBill_Bills">
+    <End Type="ShopModel.HoaDon" Role="HoaDon" Multiplicity="0..1" />
+    <End Type="ShopModel.ChiTietHoaDon" Role="ChiTietHoaDon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HoaDon">
+        <PropertyRef Name="MaHoaDon" />
+      </Principal>
+      <Dependent Role="ChiTietHoaDon">
+        <PropertyRef Name="MaHoaDon" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

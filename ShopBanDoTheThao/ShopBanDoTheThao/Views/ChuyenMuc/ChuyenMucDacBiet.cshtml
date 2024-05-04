@@ -1,0 +1,11 @@
+﻿@using ShopBanDoTheThao.Models
+
+@{
+    ViewBag.Title = "ChuyenMucDacBiet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ShopEntities shop=new ShopEntities();
+}
+
+@model ChuyenMuc
+
+@Html.Raw( Model.NoiDung)

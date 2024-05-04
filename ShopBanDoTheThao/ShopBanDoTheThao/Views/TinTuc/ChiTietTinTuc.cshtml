@@ -1,0 +1,125 @@
+﻿@using ShopBanDoTheThao.Models
+
+@{
+    ViewBag.Title = "ChiTietTinTuc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ShopEntities shop=new ShopEntities();
+    var tinTuc = (TinTuc) ViewData["TinTuc"];
+
+  
+}
+
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/owl.carousel.css" rel="stylesheet" />
+<link href="~/Content/responsive.css" rel="stylesheet" />
+<link href="~/Content/style.css" rel="stylesheet" />
+<link href="~/Content/animate.css" rel="stylesheet" />
+<link href="~/fonts/font-awesome.min.css" rel="stylesheet" />
+
+<div class="breadcrumbs">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/Home/Index">Home</a></li>
+            <li><a href="/TinTuc/Index">Tin Tức</a></li>
+            <li class="active">Chi tiết</li>
+        </ul>
+    </div>
+</div>
+
+<div class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+              
+                <div class="block">
+                    @Html.Partial("TinMoiDang")
+                </div><!-- /.block - Recent post -->
+                <div class="block">
+                    <div class="title-group"><h2>Tags</h2></div>
+                    <div class="block-content">
+                        <ol class="tags">
+                            <li><a href="#">Cr7</a></li>
+                            <li><a href="#">Messi</a></li>
+                            <li class="active"><a href="#">Cầu lông</a></li>
+                            <li><a href="#">Bóng đá</a></li>
+                            <li><a href="#">Việt Nam</a></li>
+                            <li><a href="#">F1</a></li>
+                            <li><a href="#">HonDa</a></li>
+                        </ol>
+                    </div>
+                </div><!-- /.block - Comments -->
+            </div><!-- /sidebar -->
+            <div class="col-sm-9">
+                <div class="blog-detail blog-list">
+                    <div class="blog-image"><img src="@tinTuc.AnhDaiDien" class="img-responsive" alt=""></div>
+                    <div class="item">
+                        <div class="item-inner">
+                            <h2 class="product-name"><a title="" href="#">@tinTuc.TieuDe</a></h2>
+                            <div class="ratings">
+                                <div class="rating-box">
+                                    <div style="width:67%" class="rating"></div>
+                                </div>
+                                <span class="amount"><a href="#">@tinTuc.LuotXem Lượt xem</a></span>
+                               
+                            </div>
+                            <div class="blog-attr">
+                                <span>Tạo bởi<a href="#">Admin</a></span>
+                                <span class="separator">|</span>
+                                <span>@tinTuc.NgayTao</span>
+                            </div>
+                            <div class="desc">
+                               @Html.Raw(tinTuc.ChiTiet)
+                            </div>
+                          
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="title-group3">
+                        <h3>Bình luận</h3>
+                    </div>
+                    <div class="comment-list">
+                        <div class="fb-like" width="800" data-href="@Request.Url.AbsoluteUri" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                        <div class="fb-comments" width="800" data-href="@Request.Url.AbsoluteUri" data-numposts="5"></div>
+                    </div>
+                    <hr>
+                   
+                </div>
+            </div><!-- /content -->
+        </div>
+    </div>
+</div><!-- /.main -->
+<div id="fb-root"></div>
+<script type="text/javascript">
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.6";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>	
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/owl.carousel.min.js"></script>
+<script src="~/Scripts/main.js"></script>
+<script type="text/javascript">
+            $(document).ready(function(){
+                /* recent-post slider */
+                $("#recent-post .owl").owlCarousel({
+                    autoPlay : false,
+                    items : 1,
+                    itemsDesktop : [1199,1],
+                    itemsDesktopSmall : [991,1],
+                    itemsTablet: [767,2],
+                    itemsMobile : [480,1],
+                    slideSpeed : 3000,
+                    paginationSpeed : 3000,
+                    rewindSpeed : 3000,
+                    navigation : true,
+                    stopOnHover : true,
+                    pagination : false,
+                    scrollPerPage:true,
+                });
+            });
+</script>

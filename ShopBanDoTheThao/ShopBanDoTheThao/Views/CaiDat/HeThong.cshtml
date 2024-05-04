@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "HeThong";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model ShopBanDoTheThao.Models.CaiDat
+<link href="~/Content/validationEngine.jquery.css" rel="stylesheet" />
+<div class="container-fluid">
+    <div class="col-md-12">
+        @using (Html.BeginForm("SuaCaiDat", "CaiDat", FormMethod.Post, new {enctype = "multipart/form-data", id = "frmSua"}))
+        {
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h4 class="modal-title">Cài đặt hệ thống</h4>
+                </div>
+
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+
+
+                           @*<input type=""/>*@
+
+                            <div class="form-group">
+                                <label>Logo</label>
+                                <img src="@Model.Logo" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px; margin-top: -2px;"/>
+                                <div class="input-group">
+
+                                    <span class="input-group-btn">
+                                        <span class="btn btn-default btn-file">
+
+                                            Chọn ảnh&hellip; <input type="file" name="file" class="form-control" multiple>
+                                        </span>
+                                    </span>
+                                    <input type="text" class="form-control " id="img" name="img" value="@Model.Logo" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Giờ làm việc</label>
+                                @Html.TextBoxFor(m => m.GioLamViec, new {id = "txtgiolamviec", @class = "form-control validate[required]", placeholder = "Giờ làm việc"})
+
+                            </div>
+                            <div class="form-group">
+                                <label>Chính sách giao hàng</label>
+                                @Html.TextBoxFor(m => m.GiaoHang, new {id = "txtgiaohang", @class = "form-control validate[required]", placeholder = "Chính sách giao hàng"})
+
+                            </div>
+                            <div class="form-group">
+                                <label>Chính sách hoàn tiền</label>
+                                @Html.TextBoxFor(m => m.HoanTien, new {id = "txthoantien", @class = "form-control validate[required]", placeholder = "Chính sách hoàn tiền"})
+
+                            </div>
+                            <div class="form-group">
+                                <label>Đường dây nóng</label>
+                                @Html.TextBoxFor(m => m.SDTLienHe, new {id = "txtduongdaynong", @class = "form-control validate[required]", placeholder = "Đường dây nóng"})
+
+                            </div>
+                            <div class="form-group">
+                                <label>Email liên hệ và gửi thư</label>
+                                @Html.TextBoxFor(m => m.EmailLienHe, new {id = "txtemail", @class = "form-control validate[required]", placeholder = "Email liên hệ và gửi thư", type = "email"})
+
+                            </div>
+                            <div class="form-group">
+                                <label>Mật khẩu email để gửi thư</label>
+                                @Html.TextBoxFor(m => m.MatKhauMail, new {id = "txtmk", @class = "form-control validate[required]", placeholder = "Mật khẩu mail", type = "password"})
+
+                            </div>
+                            <div class="form-group">
+                                <label>Liên kết facebook</label>
+                                @Html.TextBoxFor(m => m.FaceBook, new {id = "txtfb", @class = "form-control", placeholder = "Facebook"})
+
+                            </div>
+                            <div class="form-group">
+                                <label>Liên kết GooglePlus</label>
+                                @Html.TextBoxFor(m => m.GooglePlus, new {id = "txtgg", @class = "form-control ", placeholder = "Google Plus"})
+
+                            </div>
+                            <div class="form-group">
+                                <label>Liên kết Twitter</label>
+                                @Html.TextBoxFor(m => m.Twiter, new {id = "txttt", @class = "form-control", placeholder = "Twitter"})
+
+                            </div>
+                            <div class="form-group">
+                                <label>Liên kết Youtube</label>
+                                @Html.TextBoxFor(m => m.YouTube, new {id = "txtyt", @class = "form-control ", placeholder = "Youtube"})
+
+                            </div>
+                            <div class="form-group">
+                                <label>Liên kết Instargram</label>
+                                @Html.TextBoxFor(m => m.Instargram, new {id = "txtint", @class = "form-control ", placeholder = "Instargram"})
+
+                            </div>
+                            <div class="form-group">
+                                <label>Liên kết Google Map</label>
+                                @Html.TextBoxFor(m => m.GoogleMap, new {id = "txtggm", @class = "form-control", placeholder = "Google Map"})
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="modal-footer">
+
+                        <input type="submit" name="submit" id="bt_Sua" class="btn btn-default" value="Sửa"/>
+                        <input type="reset" class="btn btn-default"  value="Làm lại">
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script src="~/Scripts/jquery-2.1.4.min.js"></script>
+<script src="/Scripts/jquery.validationEngine-en.js"></script>
+<script src="/Scripts/jquery.validationEngine.js"></script>

@@ -1,0 +1,399 @@
+﻿@using ShopBanDoTheThao.Models
+@using PagedList
+@using PagedList.Mvc
+@using ShopBanDoTheThao.Models
+
+<link href="~/Content/validationEngine.jquery.css" rel="stylesheet" />
+@model QuanLyChuyenMuc
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ShopEntities shop = new ShopEntities();
+    int i = 0;
+    var dsChuyenMucChinh = shop.ChuyenMucs.Where(c => c.MaChuyenMucCha == null && c.DacBiet == false).OrderByDescending(s => s.MaChuyenMuc).ToPagedList(1, 10);
+    var dsChuyenMucDacBiet = shop.ChuyenMucs.Where(c => c.MaChuyenMucCha == null && c.DacBiet == true).OrderByDescending(s => s.MaChuyenMuc).ToPagedList(1, 10);
+
+
+}
+<head>
+    <link href="/Content/jquery.treegrid.css" rel="stylesheet" />
+
+</head>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+
+                <li>
+                    <i class="fa fa-dashboard">
+                        <a>
+                            @Html.ActionLink("Trang chủ", "Index", "Admin")
+                        </a>
+
+                    </i>
+                </li>
+                <li class="active">
+                    <i class="fa fa-edit"></i> Quản lý chuyên mục
+                </li>
+
+            </ol>
+        </div>
+
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                @using (Html.BeginForm("ThemChuyenMucChinh", "AdminQuanLyChuyenMuc", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmThem" }))
+                {
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Thông tin chuyên mục</h4>
+
+                        </div>
+                        <div class="modal-body">
+                            <div class="panel-body">
+                                <input type="hidden" name="id" id="txtcm" value="0">
+                                <div class="form-group">
+                                    <label>Chuyên mục cha</label>
+                                    @Html.DropDownListFor(m => m.ChuyenMuc.MaChuyenMucCha, (List<SelectListItem>)ViewBag.CM, "CHỌN CHUYÊN MỤC CHA", new { @class = "form-control validate[required]", id = "cm" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Tên chuyên mục</label>
+                                    @Html.TextBoxFor(m => m.ChuyenMuc.TenChuyenMuc, new { id = "txttencm", @class = "form-control validate[required]", placeholder = "Tên chuyên mục" })
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Đặc biệt</label>
+                                    @Html.CheckBoxFor(m => m.ChuyenMuc.DacBiet, new { id = "ckdacbiet" })
+                                </div>
+                                <div class="form-group noidung" style="display: none">
+                                    <label>Nội dung</label>
+                                    @Html.TextAreaFor(m => m.ChuyenMuc.NoiDung, new { id = "txtnoidung", @class = "form-control ", placeholder = "Nội dung" })
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <input type="submit" name="submit" id="bt_Them" class="btn btn-default" value="Thêm" />
+                            <input type="submit" name="submit" id="bt_Sua" class="btn btn-default" value="Sửa" />
+                            <input type="reset" class="btn btn-default" onclick="Huy()" value="Làm lại">
+                        </div>
+
+
+
+
+                    </div>
+                }
+            </div>
+
+        </div>
+
+
+
+    </div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#chuyenmucchinh">Chuyên mục chính</a></li>
+        <li><a data-toggle="tab" href="#chuyenmucdacbiet">Chuyên mục đặc biệt</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="chuyenmucchinh" class="tab-pane fade in active">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <a class="btn btn-app Dialog_them"  data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i>Thêm </a>
+                        </div>
+                        <div class="col-lg-8">
+                            <form action="/AdminQuanLyChuyenMuc/Index" id="fromTimKiem">
+                                <div class="col-lg-4" style="margin-left: 170px; float: right">
+                                    <label></label>
+                                    <div>
+                                        <div class="form-group input-group">
+                                            <input type="text" name="searchString" class="form-control" placeholder="Tìm Kiếm.........">
+                                            <span class="input-group-btn"><button class="btn btn-default" type="button" onclick="$('#fromTimKiem').submit();"><i class="fa fa-search"></i></button></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover table-striped tree">
+                                    <thead>
+                                        <tr>
+                                            <th>Mã </th>
+                                            <th>Tên</th>
+                                            <th>Sửa</th>
+                                            <th>Xóa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body">
+                                        @foreach (var item in dsChuyenMucChinh)
+                                        {
+
+                                            var dsChuyenMucCon = shop.ChuyenMucs.Where(c => c.MaChuyenMucCha == item.MaChuyenMuc).ToList();
+                                            <tr class="treegrid-@i">
+                                                <td>@item.MaChuyenMuc</td>
+                                                <td>@item.TenChuyenMuc</td>
+                                                @if (item.MaChuyenMuc > 36 || item.MaChuyenMuc < 31)
+                                                {
+                                                    <td>
+                                                        <button type="button" onclick="Sua(this)" class="btn btn-sm" data-toggle="modal" data-target="#myModal">Sửa</button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" onclick="Xoa(this)" class="btn btn-sm">Xóa</button>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <button disabled="disabled" type="button" onclick="Sua(this)" class="btn btn-sm" data-toggle="modal" data-target="#myModal">Sửa</button>
+                                                    </td>
+                                                    <td>
+                                                        <button disabled="disabled" type="button" onclick="Xoa(this)" class="btn btn-sm">Xóa</button>
+                                                    </td>
+                                                }
+
+                                            </tr>
+                                            //var a = i;
+                                            //a = a + 1;
+                                            foreach (var cm in dsChuyenMucCon)
+                                            {
+
+                                                <tr class="treegrid-2 treegrid-parent-@i">
+                                                    <td id="@item.MaChuyenMuc">@cm.MaChuyenMuc</td>
+                                                    <td>@cm.TenChuyenMuc</td>
+                                                    <td>
+                                                        <button type="button" onclick="Sua(this,@item.MaChuyenMuc)" class="btn btn-sm" data-toggle="modal" data-target="#myModal">Sửa</button>
+                                                    </td>
+
+                                                    <td>
+                                                        <button type="button" onclick="Xoa(this)" class="btn btn-sm">Xóa</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            i = i + 1;
+                                        }
+                                    </tbody>
+                                </table>
+                                @Html.PagedListPager(dsChuyenMucChinh, page => Url.Action("Index", new { page }))
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="chuyenmucdacbiet" class="tab-pane fade">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <a class="btn btn-app Dialog_them"  data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i>Thêm </a>
+                        </div>
+                        <div class="col-lg-8">
+                            <form action="/AdminQuanLyChuyenMuc/Index" id="fromTimKiem">
+                                <div class="col-lg-4" style="margin-left: 170px; float: right">
+                                    <label></label>
+                                    <div>
+                                        <div class="form-group input-group">
+                                            <input type="text" name="searchString" class="form-control" placeholder="Tìm Kiếm.........">
+                                            <span class="input-group-btn"><button class="btn btn-default" type="button" onclick="$('#fromTimKiem').submit();"><i class="fa fa-search"></i></button></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped tree">
+                                        <thead>
+                                            <tr>
+                                                <th>Mã </th>
+                                                <th>Tên</th>
+                                                <th>Sửa</th>
+                                                <th>Xóa</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-body">
+                                            @foreach (var item in dsChuyenMucDacBiet)
+                                            {
+
+                                                var dsChuyenMucCon = shop.ChuyenMucs.Where(c => c.MaChuyenMucCha == item.MaChuyenMuc).ToList();
+                                                <tr class="treegrid-@i">
+                                                    <td>@item.MaChuyenMuc</td>
+                                                    <td>@item.TenChuyenMuc</td>
+                                                    @if (item.MaChuyenMuc > 1040 || item.MaChuyenMuc < 1037)
+                                                    {
+                                                        <td>
+                                                            <button type="button" onclick="Sua(this)" class="btn btn-sm" data-toggle="modal" data-target="#myModal">Sửa</button>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" onclick="Xoa(this)" class="btn btn-sm">Xóa</button>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            <button disabled="disabled" type="button" onclick="Sua(this)" class="btn btn-sm" data-toggle="modal" data-target="#myModal">Sửa</button>
+                                                        </td>
+                                                        <td>
+                                                            <button disabled="disabled" type="button" onclick="Xoa(this)" class="btn btn-sm">Xóa</button>
+                                                        </td>
+                                                    }
+
+                                                </tr>
+                                                foreach (var cm in dsChuyenMucCon)
+                                                {
+
+                                                    <tr class="treegrid-2 treegrid-parent-@i">
+                                                        
+                                                        <td id="@item.MaChuyenMuc">@cm.MaChuyenMuc</td>
+                                                        <td>@cm.TenChuyenMuc</td>
+                                                        <td>
+                                                          
+                                                            <button type="button" onclick="Suadb(this,@item.MaChuyenMuc)" class="btn btn-sm" data-toggle="modal" data-target="#myModal">Sửa</button>
+                                                        </td>
+
+                                                        <td>
+                                                            <button type="button" onclick="Xoa(this)" class="btn btn-sm">Xóa</button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                i = i + 1;
+                                            }
+                                        </tbody>
+                                    </table>
+                                    @Html.PagedListPager(dsChuyenMucChinh, page => Url.Action("Index", new { page }))
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-2.1.4.min.js"></script>
+<script src="~/ckeditor/ckeditor.js"></script>
+<script src="~/Scripts/jquery.treegrid.js"></script>
+<script src="~/Scripts/jquery.treegrid.bootstrap3.js"></script>
+
+@*<script src="~/ckeditor/adapters/jquery.js"></script>*@
+<script src="~/Scripts/jquery.validationEngine.js"></script>
+<script src="~/Scripts/jquery.validationEngine-en.js"></script>
+<Script>
+
+    CKEDITOR.replace('txtnoidung');
+
+    $("#frmThem").validationEngine();
+
+
+    
+        $('.tree').treegrid({
+        });
+        $('#ckdacbiet').change(function () {
+            if (this.checked) {
+                $(".noidung").show();
+
+            } else {
+
+                $(".noidung").hide();
+
+            }
+        });
+        $('#ckdacbiet').click(function () {
+            if (!this.checked) {
+                $(".noidung").hide();
+            };
+        });
+
+    $(".Dialog_them").click(function () {
+        $("#frmThem")[0].reset();
+        $('input:checkbox').removeAttr('checked');
+        CKEDITOR.instances['txtnoidung'].setData('', function () { this.updateElement(); });
+        $(".noidung").hide();
+        $("#bt_Sua").hide();
+        $("#bt_Them").show();
+    });
+    function Huy() {
+        $("#bt_Sua").hide();
+        $("#bt_Them").show();
+    }
+
+    $("#bt_Them").click(function () {
+        if ($("#frmThem").valid()) {
+            $("#frmThem").submit();
+        }
+    });
+    $("#bt_Sua").hide();
+    function Sua(el, id) {
+      
+        event.preventDefault();
+        $("#bt_Sua").show();
+        $("#bt_Them").hide();
+        $("#txtcm").val(el.parentNode.parentNode.cells[0].textContent);
+        $("#txttencm").val(el.parentNode.parentNode.cells[1].textContent);
+        $("#cm").find("option[value='" + id + "']").prop("selected", true);
+
+        //    }
+        //});
+        $("#ckdacbiet").attr("checked", false);
+        $(".noidung").hide();
+
+
+    }
+    function Suadb(el,id) {
+      
+        event.preventDefault();
+        $("#bt_Sua").show();
+        $("#bt_Them").hide();
+        $("#txtcm").val(el.parentNode.parentNode.cells[0].textContent);
+        $("#txttencm").val(el.parentNode.parentNode.cells[1].textContent);
+        $("#cm").find("option[value='" + id + "']").prop("selected", true);
+       
+       
+        $("#ckdacbiet").attr("checked", true);
+        $(".noidung").show();
+
+        var idd = el.parentNode.parentNode.cells[0].textContent;
+        $.ajax({
+            url: '/AdminQuanLyChuyenMuc/LayChuyenMuc/?id=' + idd + '',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var json = JSON.parse(data);
+
+                CKEDITOR.instances['txtnoidung'].setData(json.NoiDung);
+
+
+            },
+            error: function (err) {
+                alert("Error: " + err.responseText);
+            }
+        });
+
+    }
+    function Xoa(el) {
+        var mid = el.parentNode.parentNode.cells[0].textContent;
+        location.href = ' @Url.Action("XoaChuyenMuc", "AdminQuanLyChuyenMuc")?id=' + mid + '';
+    }
+
+</Script>
+

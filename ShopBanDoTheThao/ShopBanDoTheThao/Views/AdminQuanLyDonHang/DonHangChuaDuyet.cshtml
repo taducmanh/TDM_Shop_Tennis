@@ -1,0 +1,112 @@
+﻿@using ShopBanDoTheThao.Models
+
+@{
+    ViewBag.Title = "Đơn hàng chờ duyệt";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ShopEntities shop = new ShopEntities();
+}
+
+@using PagedList.Mvc;
+@model QuanLyDonHang
+
+
+<div class="panel panel-default" id="dsDonHnagChuaDuyet">
+
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-4">
+                <h2>Danh sách đơn hàng</h2>
+            </div>
+            <div class="col-lg-8">
+                <form action="/AdminQuanLyDonHang/DonHangChuaDuyet" id="fromTimKiem">
+                    <div class="col-lg-4" style="margin-left: 170px; float: right">
+                        <label></label>
+                        <div>
+                            <div class="form-group input-group">
+                                <input type="text" name="searchString" class="form-control" placeholder="Tìm Kiếm.........">
+                                <span class="input-group-btn"><button class="btn btn-default" type="button" onclick="$('#fromTimKiem').submit();"><i class="fa fa-search"></i></button></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+           
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Mã hóa đơn</th>
+                                <th>Tài khoản</th>
+                                <th>Ngày tạo </th>
+                                <th>Ngày duyệt</th>
+                                <th>Trạng thái </th>
+                                <th>Tổng giá trị</th>
+                                <th>Chi tiết</th>
+            
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            @if (Model.DanhSachHoaDon!=null)
+                            {
+                                foreach (var item in Model.DanhSachHoaDon)
+                                {
+
+
+                                    <tr>
+                                        <td>@item.MaHoaDon</td>
+                                        <td>@item.TenKH</td>
+                                        <td>@item.NgayTao</td>
+                                        <td>@item.NgayDuyet</td>
+                                        <td>Chưa duyệt</td>
+                                        <td>@item.TongGia</td>
+                                        <td><a onclick="ChiTiet(this)" style="cursor: pointer">Chi tiết</a></td>
+
+                                        @*<td>
+                                                <button type="button" onclick="Duyet(this)" class="btn btn-sm">Duyệt</button>
+
+                                            </td>
+                                            <td>
+                                                <button type="button" onclick="Xoa(this)" class="btn btn-sm">Xóa</button>
+                                            </td>*@
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    @Html.PagedListPager(Model.DanhSachHoaDon, page => Url.Action("DonHangChuaDuyet", new { page }))
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<Script>
+    function Xoa(el) {
+        var mid = el.parentNode.parentNode.cells[0].textContent;
+        location.href = ' @Url.Action("XoaDonHang", "AdminQuanLyDonHang")?id=' + mid + '&Loai=0';
+    }
+    function Duyet(el) {
+        var mid = el.parentNode.parentNode.cells[0].textContent;
+        location.href = ' @Url.Action("DuyetDonHang", "AdminQuanLyDonHang")?id=' + mid + '';
+    }
+
+    function ChiTiet(el) {
+        $("#ChiTietDonHang").show();
+        $("#dsDonHnagChuaDuyet").hide();
+        var maHoaDon = el.parentNode.parentNode.cells[0].textContent;
+     
+       
+        location.href = ' @Url.Action("ChiTietDonHang", "AdminQuanLyDonHang")?id=' + maHoaDon + '';
+    }
+
+</Script>

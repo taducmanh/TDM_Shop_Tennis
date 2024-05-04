@@ -1,0 +1,174 @@
+﻿@using ShopBanDoTheThao.Models
+
+@{
+    ViewBag.Title = "Slide";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ShopEntities shop = new ShopEntities();
+}
+
+@model SlideViewModel
+@using (Html.BeginForm("SuaSlide", "CaiDat", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Slide 1
+            </div>
+            <div class="panel-body">
+                <input type="hidden" name="id" id="txtmaanh" value="1">
+
+                <div class="form-group">
+                    <label>Tiêu đề ảnh</label>
+
+                    @Html.DisplayFor(m => m.Slides1.TieuDe, new { @class = "form-control hienthi", id = "SL1_TieuDe" })
+                    @Html.TextBoxFor(m => m.Slides1.TieuDe, new { @class = "form-control chinhsua", id = "SL1_TieuDe" })
+                </div>
+                <div class="form-group">
+                    <label>Tiêu đề 1</label>
+                    @Html.DisplayFor(m => m.Slides1.TieuDe1, new { id = "SL1_TieuDe_1", @class = "form-control hienthi" })
+                    @Html.TextBoxFor(m => m.Slides1.TieuDe1, new { @class = "form-control chinhsua", id = "SL1_TieuDe_1" })
+                </div>
+
+                <div class="form-group">
+                    <label>Ảnh nền</label>
+                    <img style="width: 300px;" src="@Url.Content(Model.Slides1.LinkAnh)" alt="Image" />
+                    <input type="file" name="file" class="form-control chinhsua">
+                    <input type="hidden" id="hdimg" name="hdimg" value="@Url.Content(Model.Slides1.LinkAnh)" />
+                </div>
+                <div class="form-group">
+                    <label>Tiêu đề 2</label>
+                    @Html.DisplayFor(m => m.Slides1.TieuDe2, new { id = "SL1_TieuDe_2", @class = "form-control hienthi" })
+                    @Html.TextBoxFor(m => m.Slides1.TieuDe2, new { @class = "form-control chinhsua", id = "SL1_TieuDe_2" })
+                </div>
+                <div class="form-group">
+                    <label>Mô tả 1</label>
+                    @Html.DisplayFor(m => m.Slides1.MoTa1, new { id = "SL1_MoTa_1", @class = "form-control hienthi" })
+                    @Html.TextBoxFor(m => m.Slides1.MoTa1, new { @class = "form-control chinhsua", id = "SL1_MoTa_1" })
+                </div>
+                <div class="form-group">
+                    <label>Mô tả 2</label>
+                    @Html.DisplayFor(m => m.Slides1.MoTa2, new { id = "SL1_MoTa_2", @class = "form-control hienthi" })
+                    @Html.TextBoxFor(m => m.Slides1.MoTa2, new { @class = "form-control chinhsua", id = "SL1_MoTa_2" })
+
+                </div>
+                <div class="form-group">
+                    <label>Mô tả 3</label>
+                    @Html.DisplayFor(m => m.Slides1.MoTa3, new { id = "SL1_MoTa_3", @class = "form-control hienthi" })
+                    @Html.TextBoxFor(m => m.Slides1.MoTa3, new { @class = "form-control chinhsua", id = "SL1_MoTa_3" })
+                </div>
+                <div class="form-group">
+                    <label>Mô tả 4</label>
+                    @Html.DisplayFor(m => m.Slides1.MoTa4, new { id = "SL1_MoTa_4", @class = "form-control hienthi" })
+                    @Html.TextBoxFor(m => m.Slides1.MoTa4, new { @class = "form-control chinhsua", id = "SL1_MoTa_4" })
+                </div>
+                <button type="button" class="btn btn-default" id="bt_Sua_sl1">Sửa</button>
+                <input type="submit" name="submit" id="Luu_1" class="btn btn-default" value="Lưu" />
+                <button type="button" class="btn btn-default" id="bt_Huy_sl1">Hủy</button>
+            </div>
+        </div>
+    </div>
+}
+@using (Html.BeginForm("SuaSlide", "CaiDat", FormMethod.Post, new { enctype = "multipart/form-data" }))
+ {
+
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Slide 2
+            </div>
+            <div class="panel-body">
+                <input type="hidden" name="id" id="txtmaanh" value="2">
+
+                <div class="form-group">
+                    <label>Tiêu đề ảnh</label>
+
+                    @Html.DisplayFor(m => m.Slides2.TieuDe, new { @class = "form-control hienthi_2", id = "SL2_TieuDe" })
+                    @Html.TextBoxFor(m => m.Slides2.TieuDe, new { @class = "form-control chinhsua_2", id = "SL2_TieuDe" })
+                </div>
+                <div class="form-group">
+                    <label>Tiêu đề 1</label>
+                    @Html.DisplayFor(m => m.Slides2.TieuDe1, new { id = "SL2_TieuDe_1", @class = "form-control hienthi_2" })
+                    @Html.TextBoxFor(m => m.Slides2.TieuDe1, new { @class = "form-control chinhsua_2", id = "SL2_TieuDe_1" })
+                </div>
+
+                <div class="form-group">
+                    <label>Ảnh nền</label>
+                    <img style="width: 300px;" src="@Url.Content(Model.Slides2.LinkAnh)" alt="Image" />
+                    <input type="file" name="file" class="form-control chinhsua_2">
+                    <input type="hidden" id="hdimg" name="hdimg" value="@Url.Content(Model.Slides2.LinkAnh)" />
+                </div>
+                <div class="form-group">
+                    <label>Tiêu đề 2</label>
+                    @Html.DisplayFor(m => m.Slides2.TieuDe2, new { id = "SL2_TieuDe_2", @class = "form-control hienthi_2" })
+                    @Html.TextBoxFor(m => m.Slides2.TieuDe2, new { @class = "form-control chinhsua_2", id = "SL2_TieuDe_2" })
+                </div>
+                <div class="form-group">
+                    <label>Mô tả 1</label>
+                    @Html.DisplayFor(m => m.Slides2.MoTa1, new { id = "SL2_MoTa_1", @class = "form-control hienthi_2" })
+                    @Html.TextBoxFor(m => m.Slides2.MoTa1, new { @class = "form-control chinhsua_2", id = "SL2_MoTa_1" })
+                </div>
+                <div class="form-group">
+                    <label>Mô tả 2</label>
+                    @Html.DisplayFor(m => m.Slides2.MoTa2, new { id = "SL2_MoTa_2", @class = "form-control hienthi_2" })
+                    @Html.TextBoxFor(m => m.Slides2.MoTa2, new { @class = "form-control chinhsua_2", id = "SL2_MoTa_2" })
+
+                </div>
+                <div class="form-group">
+                    <label>Mô tả 3</label>
+                    @Html.DisplayFor(m => m.Slides2.MoTa3, new { id = "SL2_MoTa_3", @class = "form-control hienthi_2" })
+                    @Html.TextBoxFor(m => m.Slides2.MoTa3, new { @class = "form-control chinhsua_2", id = "SL2_MoTa_3" })
+                </div>
+                <div class="form-group">
+                    <label>Mô tả 4</label>
+                    @Html.DisplayFor(m => m.Slides2.MoTa4, new { id = "SL2_MoTa_4", @class = "form-control hienthi_2" })
+                    @Html.TextBoxFor(m => m.Slides2.MoTa4, new { @class = "form-control chinhsua_2", id = "SL2_MoTa_4" })
+                </div>
+                <button type="button" class="btn btn-default" id="bt_Sua_sl2">Sửa</button>
+                <input type="submit" name="submit" id="Luu_2" class="btn btn-default" value="Lưu" />
+                <button type="button" class="btn btn-default" id="bt_Huy_sl2">Hủy</button>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<Script>
+    $(window).load(function () {
+        $(".chinhsua").hide();
+
+        $("#Luu_1").hide();
+
+    });
+    $("#bt_Sua_sl1").click(function () {
+        $(".chinhsua").show();
+        $(".hienthi").hide();
+        $("#bt_Sua_sl1").hide();
+        $("#Luu_1").show();
+    });
+    $("#bt_Huy_sl1").click(function () {
+        $(".chinhsua").hide();
+        $(".hienthi").show();
+        $("#bt_Sua_sl1").show();
+        $("#Luu_1").hide();
+    });
+
+    $(window).load(function () {
+        $(".chinhsua_2").hide();
+
+        $("#Luu_2").hide();
+
+    });
+    $("#bt_Sua_sl2").click(function () {
+        $(".chinhsua_2").show();
+        $(".hienthi_2").hide();
+        $("#bt_Sua_sl2").hide();
+        $("#Luu_2").show();
+    });
+    $("#bt_Huy_sl2").click(function () {
+        $(".chinhsua_2").hide();
+        $(".hienthi_2").show();
+        $("#bt_Sua_sl2").show();
+        $("#Luu_2").hide();
+    });
+</Script>

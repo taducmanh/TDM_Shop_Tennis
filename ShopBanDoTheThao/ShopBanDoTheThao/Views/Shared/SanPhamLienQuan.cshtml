@@ -1,0 +1,207 @@
+﻿@using ShopBanDoTheThao.Models
+@{
+    var sanPhamLienQuan = (List<SanPham>)ViewData["LienQuan"];
+}
+<div class="col-sm-3 col-left">
+    <div class="block">
+        <div class="title-group"><h2>Liên quan</h2></div>
+        <div id="special-offer" class="owl-container">
+            <div class="owl">
+                @for (int i = 0; i < sanPhamLienQuan.Count; i = i + 4)
+                {
+                    <div class='sepecialoffer-item item'>
+                    @if (i< sanPhamLienQuan.Count)
+                    {
+
+                    <div class="item-inner first">
+                        <div class="images-container">
+                            <a href="/QuanLySanPham/ChiTietSanPham/@sanPhamLienQuan[i].MaSanPham" onclick="TangLuot(@sanPhamLienQuan[i].MaSanPham)" title="Primis in faucibus" class="product-image">
+                                <img src="@sanPhamLienQuan[i].AnhDaiDien" alt="Primis in faucibus" />
+                            </a>
+                        </div>
+                        <div class="des-container">
+                            <h2 class="product-name">
+                                <a href="/QuanLySanPham/ChiTietSanPham/@sanPhamLienQuan[i].MaSanPham" onclick="TangLuot(@sanPhamLienQuan[i].MaSanPham)" title="Primis in faucibus">@sanPhamLienQuan[i].TenSanPham</a>
+                            </h2>
+                            <div class="price-box">
+                                @if (sanPhamLienQuan[i].GiaGiam > 0)
+                                {
+                                    <p class="special-price">
+                                        <span class="price-label">Giá : </span>
+                                        <span class="price">@double.Parse(sanPhamLienQuan[i].GiaGiam.ToString()).ToString("#,##0")</span>
+                                    </p>
+                                            <p class="old-price">
+                                                <span class="price-label">Giá NY: </span>
+                                                <span class="price">@double.Parse(sanPhamLienQuan[i].Gia.ToString()).ToString("#,##0")</span>
+                                            </p>
+                                }
+                                else
+                                {
+                                    <p class="special-price">
+                                        <span class="price-label">Giá NY: </span>
+                                        <span class="price">@double.Parse(sanPhamLienQuan[i].Gia.ToString()).ToString("#,##0")</span>
+                                    </p>
+                                }
+                            </div>
+                            <div class="ratings">
+                                <div class="rating-box">
+                                    <div class="rating" style="width: 87%"></div>
+                                </div>
+                                <span class="amount"><a href="#">@sanPhamLienQuan[i].LuotXem Lượt xem</a></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    }
+
+                    @if ((i + 1) < sanPhamLienQuan.Count)
+                    {
+                    <div class="item-inner">
+                        <div class="images-container">
+                            <a href="/QuanLySanPham/ChiTietSanPham/@sanPhamLienQuan[i+1].MaSanPham" onclick="TangLuot(@sanPhamLienQuan[i+1].MaSanPham)" title="Accumsan elit " class="product-image">
+                                <img src="@sanPhamLienQuan[i + 1].AnhDaiDien" alt="Accumsan elit " />
+                            </a>
+                        </div>
+                        <div class="des-container">
+                            <h2 class="product-name">
+                                <a href="/QuanLySanPham/ChiTietSanPham/@sanPhamLienQuan[i+1].MaSanPham" onclick="TangLuot(@sanPhamLienQuan[i+1].MaSanPham)" title="Accumsan elit ">@sanPhamLienQuan[i + 1].TenSanPham </a>
+                            </h2>
+                            <div class="price-box">
+                                @if (sanPhamLienQuan[i + 1].GiaGiam > 0)
+                                {
+                                    <p class="special-price">
+                                        <span class="price-label">Giá : </span>
+                                        <span class="price">@double.Parse(sanPhamLienQuan[i + 1].GiaGiam.ToString()).ToString("#,##0")</span>
+                                    </p>
+                                            <p class="old-price">
+                                                <span class="price-label">Giá NY: </span>
+                                                <span class="price">@double.Parse(sanPhamLienQuan[i + 1].Gia.ToString()).ToString("#,##0")</span>
+                                            </p>
+                                }
+                                else
+                                {
+                                    <p class="special-price">
+                                        <span class="price-label">Giá NY: </span>
+                                        <span class="price">@double.Parse(sanPhamLienQuan[i + 1].Gia.ToString()).ToString("#,##0")</span>
+                                    </p>
+                                }
+                            </div>
+                            <div class="ratings">
+                                <div class="rating-box">
+                                    <div class="rating" style="width: 67%"></div>
+                                </div>
+                                <span class="amount"><a href="#">@sanPhamLienQuan[i + 1].LuotXem Lượt xem</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    @if ((i + 2) < sanPhamLienQuan.Count)
+                    {
+                    <div class="item-inner">
+                        <div class="images-container">
+                            <a href="/QuanLySanPham/ChiTietSanPham/@sanPhamLienQuan[i+2].MaSanPham" onclick="TangLuot(@sanPhamLienQuan[i+2].MaSanPham)"title="Nunc facilisis" class="product-image">
+                                <img src="@sanPhamLienQuan[i + 2].AnhDaiDien" alt="Nunc facilisis" />
+                            </a>
+                        </div>
+                        <div class="des-container">
+                            <h2 class="product-name">
+                                <a href="/QuanLySanPham/ChiTietSanPham/@sanPhamLienQuan[i+2].MaSanPham" onclick="TangLuot(@sanPhamLienQuan[i+2].MaSanPham)" title="Nunc facilisis">@sanPhamLienQuan[i + 2].TenSanPham</a>
+                            </h2>
+                            <div class="price-box">
+                                @if (sanPhamLienQuan[i + 2].GiaGiam > 0)
+                                {
+                                    <p class="special-price">
+                                        <span class="price-label">Giá : </span>
+                                        <span class="price">@double.Parse(sanPhamLienQuan[i + 2].GiaGiam.ToString()).ToString("#,##0")</span>
+                                    </p>
+                                            <p class="old-price">
+                                                <span class="price-label">Giá NY: </span>
+                                                <span class="price">@double.Parse(sanPhamLienQuan[i + 2].Gia.ToString()).ToString("#,##0")</span>
+                                            </p>
+                                }
+                                else
+                                {
+                                    <p class="special-price">
+                                        <span class="price-label">Giá NY: </span>
+                                        <span class="price">@double.Parse(sanPhamLienQuan[i + 2].Gia.ToString()).ToString("#,##0")</span>
+                                    </p>
+                                }
+                            </div>
+                            <div class="ratings">
+                                <div class="rating-box">
+                                    <div class="rating" style="width: 67%"></div>
+                                </div>
+                                <span class="amount"><a href="#">@sanPhamLienQuan[i+2].LuotXem Lượt xem</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    @if ((i + 3) < sanPhamLienQuan.Count)
+                    {
+                    <div class="item-inner last">
+                        <div class="images-container">
+                            <a href="/QuanLySanPham/ChiTietSanPham/@sanPhamLienQuan[i+3].MaSanPham" onclick="TangLuot(@sanPhamLienQuan[+3].MaSanPham)" title="Fusce aliquam" class="product-image">
+                                <img src="@sanPhamLienQuan[i + 3].AnhDaiDien" alt="Fusce aliquam" />
+                            </a>
+                        </div>
+                        <div class="des-container">
+                            <h2 class="product-name">
+                                <a href="/QuanLySanPham/ChiTietSanPham/@sanPhamLienQuan[i+3].MaSanPham" onclick="TangLuot(@sanPhamLienQuan[i+3].MaSanPham)" title="Fusce aliquam">@sanPhamLienQuan[i + 3].TenSanPham</a>
+                            </h2>
+                            <div class="price-box">
+                                @if (sanPhamLienQuan[i + 3].GiaGiam > 0)
+                                {
+                                    <p class="special-price">
+                                        <span class="price-label">Giá : </span>
+                                        <span class="price">@double.Parse(sanPhamLienQuan[i + 3].GiaGiam.ToString()).ToString("#,##0")</span>
+                                    </p>
+                                            <p class="old-price">
+                                                <span class="price-label">Giá NY: </span>
+                                                <span class="price">@double.Parse(sanPhamLienQuan[i + 3].Gia.ToString()).ToString("#,##0")</span>
+                                            </p>
+                                }
+                                else
+                                {
+                                    <p class="special-price">
+                                        <span class="price-label">Giá NY: </span>
+                                        <span class="price">@double.Parse(sanPhamLienQuan[i + 3].Gia.ToString()).ToString("#,##0")</span>
+                                    </p>
+                                }
+                            </div>
+                            <div class="ratings">
+                                <div class="rating-box">
+                                    <div class="rating" style="width: 67%"></div>
+                                </div>
+                                <span class="amount"><a href="#">@sanPhamLienQuan[i+3].LuotXem Lượt xem</a></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    }
+                </div>
+
+                }
+
+            </div>
+        </div><!-- /.owl-container -->
+    </div><!-- /.block - Special offer -->
+
+</div><!-- /.col-left -->
+<script src="~/Scripts/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+    
+    function TangLuot(id) {
+
+        $.ajax({
+            url: '/QuanLySanPham/TangLuotXem/' + id + '',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+
+            },
+            error: function (err) {
+
+            }
+        });
+    };
+</script>

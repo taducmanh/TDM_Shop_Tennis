@@ -1,0 +1,166 @@
+﻿@using ShopBanDoTheThao.Models
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var list = (List<SanPham>)ViewData["DanhSachSanPham"];
+}
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/nivo-slider.css" rel="stylesheet" />
+<link href="~/Content/owl.carousel.css" rel="stylesheet" />
+<link href="~/Content/responsive.css" rel="stylesheet" />
+<link href="~/Content/style.css" rel="stylesheet" />
+<link href="~/Content/animate.css" rel="stylesheet" />
+<link href="~/Content/cloud-zoom.css" rel="stylesheet" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic,700,700italic,800' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Raleway:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<div class="breadcrumbs">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/Home/Index">Trang chủ</a></li>
+            <li class="active">Tìm kiếm</li>
+        </ul>
+    </div>
+</div><!-- /.breadcrumbs -->
+@*//<link href="~/Content/AdminLTE.css" rel="stylesheet" />*@
+<div class="row">
+    <div class="col-md-12">
+        @foreach (SanPham p in list)
+
+        {
+            <div class="col-md-3 col-sm-8">
+                <div class='productslider-item item'>
+                    <div class="item-inner">
+                        <div class="images-container">
+                            <div class="product_icon">
+                                <div class='new-icon'><span>new</span></div>
+                            </div>
+                            <a href="/QuanLySanPham/ChiTietSanPham/@p.MaSanPham" onclick="TangLuot(@p.MaSanPham)" title="@p.TenSanPham" class="product-image">
+                                <img src="@p.AnhDaiDien" alt="@p.TenSanPham" style="height: 200px;" />
+                            </a>
+
+                        </div>
+                        <div class="des-container">
+                            <h2 class="product-name" style="overflow: hidden; text-overflow: ellipsis;white-space: nowrap;    width: 100%;">
+                                <a href="/QuanLySanPham/ChiTietSanPham/@p.MaSanPham" onclick="TangLuot(@p.MaSanPham)" title="@p.TenSanPham" >@p.TenSanPham</a>
+                            </h2>
+                            <div class="price-box">
+                                @if (p.GiaGiam > 0)
+                                {
+                                    <p class="special-price">
+                                        <span class="price-label">Giá : </span>
+                                        <span class="price">@double.Parse(p.GiaGiam.ToString()).ToString("#,##0")</span>
+                                    </p>
+                                    <p class="old-price">
+                                        <span class="price-label">Giá NY: </span>
+                                        <span class="price">@double.Parse(p.Gia.ToString()).ToString("#,##0")</span>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="special-price">
+                                        <span class="price-label">Giá NY: </span>
+                                        <span class="price">@double.Parse(p.Gia.ToString()).ToString("#,##0")</span>
+                                    </p>
+                                    <p class="old-price">
+                                        <span class="price-label">&nbsp;</span>
+                                        <span class="price">&nbsp;</span>
+                                    </p>
+                                }
+                            </div>
+                            <div class="ratings">
+                                <div class="rating-box">
+                                    <div class="rating" style="width: 67%"></div>
+                                </div>
+                                <span class="amount"><a href="#">@p.LuotXem Lượt xem</a></span>
+
+                                @using (Html.BeginForm("ThemVaoGioHang", "GioHang", new { id = p.MaSanPham, SoLuong = 1 }, FormMethod.Post, new { enctype = "multipart/form-data", id = "fromThem" }))
+                                {
+
+                                    <a href="javascript:;" style="width: 100%" class="btn btn-danger btn-cart" onclick="$(this).closest('form').submit();">Thêm vào giỏ</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+        }
+
+    </div>
+    <div class="col-md-12">
+        @Html.Partial("SanPhamBanChay");
+    </div>
+</div>
+
+@Html.Partial("ChuyenMucKhac")
+@Html.Partial("HangSXPhoBien")
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+@*<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>*@
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.bxslider.min.js"></script>
+<script src="~/Scripts/owl.carousel.min.js"></script>
+<script src="~/Scripts/main.js"></script>
+<script src="~/Scripts/cloud-zoom.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        /* special-offer slider */
+        $("#special-offer .owl").owlCarousel({
+            autoPlay: false,
+            items: 1,
+            itemsDesktop: [1199, 1],
+            itemsDesktopSmall: [991, 1],
+            itemsTablet: [767, 2],
+            itemsMobile: [480, 1],
+            slideSpeed: 3000,
+            paginationSpeed: 3000,
+            rewindSpeed: 3000,
+            navigation: true,
+            stopOnHover: true,
+            pagination: false,
+            scrollPerPage: true,
+        });
+        /* featured-products slider */
+        $("#featured-products .owl").owlCarousel({
+            autoPlay: false,
+            items: 4,
+            itemsDesktop: [1199, 3],
+            itemsDesktopSmall: [991, 2],
+            itemsTablet: [767, 2],
+            itemsMobile: [480, 1],
+            slideSpeed: 3000,
+            paginationSpeed: 3000,
+            rewindSpeed: 3000,
+            navigation: true,
+            stopOnHover: true,
+            pagination: false,
+            scrollPerPage: true,
+        });
+        /* .thumbnail-container product image slider */
+        $('.thumbnail-container .bxslider').bxSlider({
+            slideWidth: 94,
+            slideMargin: 5,
+            minSlides: 4,
+            maxSlides: 4,
+            pager: false,
+            speed: 500,
+            pause: 3000
+        });
+    });
+    function TangLuot(id) {
+
+        $.ajax({
+            url: '/QuanLySanPham/TangLuotXem/' + id + '',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+
+            },
+            error: function (err) {
+
+            }
+        });
+    };
+</script>

@@ -1,0 +1,128 @@
+﻿@using ShopBanDoTheThao.Models
+@model dynamic
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ShopEntities shop=new ShopEntities();
+    var dsTinTuc = (List<TinTuc>) ViewData["DsTinTuc"];
+}
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/nivo-slider.css" rel="stylesheet" />
+<link href="~/Content/owl.carousel.css" rel="stylesheet" />
+<link href="~/Content/responsive.css" rel="stylesheet" />
+<link href="~/Content/style.css" rel="stylesheet" />
+<link href="~/Content/animate.css" rel="stylesheet" />
+<link href="~/fonts/font-awesome.min.css" rel="stylesheet" />
+
+<div class="breadcrumbs">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/Home/Index">Home</a></li>
+            <li class="active">Tin tức</li>
+        </ul>
+    </div>
+</div>
+
+<div class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="block">
+                   @Html.Partial("TinMoiDang");
+                </div><!-- /.block - Recent post -->
+               
+                <div class="block">
+                    <div class="title-group"><h2>Tags</h2></div>
+                    <div class="block-content">
+                        <ol class="tags">
+                            <li><a href="#">Cr7</a></li>
+                            <li><a href="#">Messi</a></li>
+                            <li class="active"><a href="#">Cầu lông</a></li>
+                            <li><a href="#">Bóng đá</a></li>
+                            <li><a href="#">Việt Nam</a></li>
+                            <li><a href="#">F1</a></li>
+                            <li><a href="#">HonDa</a></li>
+                        </ol>
+                    </div>
+                </div><!-- /.block - Comments -->
+            </div>
+            <div class="col-sm-9">
+                <ol id="products-list" class="blog-list">
+                    @foreach (var item in dsTinTuc)
+                    {
+                        <li class="item">
+                            <div class="item-inner">
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="images-container">
+                                            <a class="product-image" title="@item.TieuDe" href="#" rel="author"><img alt="@item.TieuDe" src="@item.AnhDaiDien"></a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <h2 class="product-name">
+                                            <a title="" href="/TinTuc/ChiTietTinTuc/@item.MaTinTuc">@item.TieuDe</a>
+                                        </h2>
+                                        <div class="ratings">
+                                            <div class="rating-box">
+                                                <div style="width: 67%" class="rating"></div>
+                                            </div>
+                                            <span class="amount"><a href="/TinTuc/ChiTietTinTuc/@item.MaTinTuc">@item.LuotXem Lượt xem</a></span>
+                                         
+                                        </div>
+                                        <div class="blog-attr">
+                                            <span>Tạo bơi <a href="#">Admin</a></span>
+                                            <span class="separator">|</span>
+                                            <span>@item.NgayTao</span>
+                                        </div>
+                                        <div class="desc">
+                                           @item.MoTa
+                                        </div>
+                                        <a href="/TinTuc/ChiTietTinTuc/@item.MaTinTuc" class="btn btn-default btn-readmore">Xem thêm</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                   
+                </ol>
+                <nav>
+                    <ul class="pagination">
+                        <li><a href="#" aria-label="Previous">Prev</a></li>
+                        <li class="divider"><span>|</span></li>
+                        <li><a href="#">1</a></li>
+                        <li class="divider"><span>|</span></li>
+                        <li><a href="#">2</a></li>
+                        <li class="divider"><span>|</span></li>
+                        <li><a href="#" aria-label="Next">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div><!-- /.main -->
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/owl.carousel.min.js"></script>
+<script src="~/Scripts/main.js"></script>
+<script type="text/javascript">
+            $(document).ready(function(){
+                /* recent-post slider */
+                $("#recent-post .owl").owlCarousel({
+                    autoPlay : false,
+                    items : 1,
+                    itemsDesktop : [1199,1],
+                    itemsDesktopSmall : [991,1],
+                    itemsTablet: [767,2],
+                    itemsMobile : [480,1],
+                    slideSpeed : 3000,
+                    paginationSpeed : 3000,
+                    rewindSpeed : 3000,
+                    navigation : true,
+                    stopOnHover : true,
+                    pagination : false,
+                    scrollPerPage:true,
+                });
+            });
+</script>
