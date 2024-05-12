@@ -1,0 +1,14 @@
+﻿@model IEnumerable<ShopNoiThat.Models.Mcategory>
+
+<div class=" collapse d-md-flex border  " id="sidebar">
+    <ul class="nav flex-column flex-nowrap w-100 bg-white list-group ">
+        <li class="list-group-item bg-success text-white "> Danh Mục Sản Phẩm</li>
+        <div class="d-flex" style="overflow:auto;width:100%">
+            @foreach (var item in Model)
+            {
+                @Html.Action("SubListcategory", "module", new { parentid = item.ID })
+            }
+
+        </div>
+    </ul>
+</div>

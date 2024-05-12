@@ -1,0 +1,94 @@
+﻿@model List<ShopNoiThat.Models.Cart_item>
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_LayoutSite.cshtml";
+}
+
+@Html.Action("Mainmenu", "module")
+
+<section class="container-fluid pt-5">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="font-weight-bold text-xanhduong">Giỏ hàng</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th width="12%">Hình Ảnh</th>
+                            <th class="text-center">Tên Sản Phẩm</th>
+                            <th class="text-center">Giá Tiền</th>
+                            <th class="text-center" style="width:160px;">Số Lượng</th>
+                            <th class="text-center" style="width:160px;">Thành Tiền</th>
+                            <th class="text-center" style="width:20%;">Tùy Chọn</th>
+                            <th style="width:20px;" class="text-center">ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            float sum = 0;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            int sale = (int)item.product.pricesale;
+                            float price = sale > 0 ? ((int)item.product.price - (int)item.product.price / 100 * (int)sale) : (int)item.product.price;
+                            float totalPrice = price * item.quantity;
+                            sum += totalPrice;
+
+                            <tr>
+                                <td><img src="~/public/images/@item.product.img" alt="Product Image" class="img-fluid"></td>
+                                <td class="text-center">@item.product.name</td>
+                                <td class="text-center">
+                                    @if (sale > 0)
+                                    {
+                                        <span class="text-danger"><strike>@item.product.price.ToString("N0") VND</strike></span><br />
+                                        @price.ToString("N0") 
+                                                        }
+                                    else
+                                    {
+                                        @item.product.price.ToString("N0")
+                                                        }
+                                </td>
+                                <td class="text-center">
+                                    <form action="@Url.Action("updateitem")" method="get">
+                                        <input type="hidden" name="P_SanPhamID" value="@item.product.ID" />
+                                        <input class="w-50" type="number" min="1" step="1" name="P_quantity" value="@item.quantity" />
+                                    </form>
+                                </td>
+                                <td class="text-center">@totalPrice.ToString("N0") VND</td>
+                                <td class="text-center">
+                                    <form action="~/xoa-gio-hang" method="get">
+                                        <input type="hidden" name="productID" value="@item.product.ID" />
+                                        <button type="submit" class="btn btn-sm btn-warning text-white"><i class="fas fa-retweet"></i></button>
+                                    </form>
+                                    <a href="~/xoa-gio-hang?productID=@item.product.ID" class="btn btn-sm btn-dodam text-white"><i class="far fa-trash-alt"></i></a>
+                                </td>
+                                <td class="text-center">@item.product.ID</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="pt-4 pl-3">
+                        <a href="~/sanpham" class="card-link text-body1"><i class="fas fa-caret-left"></i> Tiếp Tục Mua Hàng</a>
+                    </div>
+                </div>
+                <div class="col-md-6 text-danger">
+                    <div class="float-right p-3">
+                        <span class="font-weight-bold">Tổng Tiền: @sum.ToString("N0") VND</span><br>
+                        <div class="pt-2">
+                            <a href="~/thanh-toan" class="btn btn-sm btn-dodam float-right text-white">Thanh Toán</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
